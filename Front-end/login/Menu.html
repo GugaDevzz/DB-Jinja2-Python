@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catatau Lanches</title>
+    <link rel="stylesheet" href="/Front-end/cadastro/stylecss.css">
+    <link rel="icon" type="image/png" href="/Front-end/imagem/catatauimg.png" alt="favicon do catatau">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Ultra&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    
+    <div class="top-banner">
+        UAU! Com uma conta criada você pode favoritar seus lanches no catatau.
+    </div>
+    
+    <nav class="navbar">
+        <div class="nav-container">
+            <section class="logonav">
+                <img src="/Front-end/imagem/catatauimg.png">
+            </section>
+            
+            <a 
+                href="/Front-end/index.html" class="voltar-menu">
+                <i class="material-icons">arrow_back_ios</i>
+                <span class="voltar">Voltar</span>
+            </a>
+        </div>
+    </nav>
+
+<section class="quadrado">
+    <section class="cadastro">
+        <div class="logocadastro">
+            <a href="/Front-end/index.html">
+                <img src="/Front-end/imagem/catatauimg.png">
+            </a>
+        </div>
+        <h1 class="primeiro">Criar uma conta</h1>
+        
+        <div class="segundo">Bem vindo ao Catatau Lanches!</div>
+    
+        
+        <form action="/cadastro" method="POST">
+            
+            <!-- Adicionado name="nome" -->
+            <input type="text" placeholder="Nome completo" 
+            title="Digite seu nome completo" 
+            maxlength="25" 
+            class="nome" 
+            name="nome" 
+            required>
+            
+            <!-- Adicionado name="senha" -->
+            <input type="password" placeholder="Senha"
+            class="senha"
+            name="senha"
+            required>
+
+            <div class="container-box">
+                <input type="checkbox" id="box" name="box">
+                <label for="lembrar">Mantenha-me conectado</label>
+            </div>
+            <button type="submit" class="cadastrar" style="text-decoration: none">Entrar</button>
+            <a href="/login" class="existente" style="text-decoration: none">Criar uma conta</a>
+            {% if erro %}
+                <div class="container-error">
+                    <h3 class="error">
+                        {{ erro }}
+                    </h3>
+                    <img src="/Front-end/cadastro/img/faixa-erro.png" alt="faixa-erro" class="notificacion-error">
+                </div>
+            {% endif %}
+            </form>
+            
+        </section>
+    </section>
+
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-col">
+                <h2 class="footer-logo">Catatau<span>Lanches</span></h2>
+                <p>O verdadeiro podrão raiz desde 1992. Qualidade e tamanho que você conhece.</p>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Navegação</h3>
+                <ul>
+                    <li><a href="/cardapio/lanches.html">Cardápio</a></li>
+                    <li><a target="_blank" href="https://www.google.com/maps/place/Catatau+Lanches/@-21.1724811,-47.7973029,17z/data=!3m1!4b1!4m6!3m5!1s0x94b9bf0415c9171f:0xfafb21436bf0c0ac!8m2!3d-21.1724811!4d-47.7973029!16s%2Fg%2F1tgcs_33?entry=ttu&g_ep=EgoyMDI2MDUyNy4wIKXMDSoASAFQAw%3D%3D">Unidades</a></li>
+                    <li><a href="/menu/sobre-nos.html">Sobre nós</a></li>
+                        <li><a href="#">Trabalhe Conosco</a></li>
+                    </ul>
+                </div>
+
+            <div class="footer-col">
+                <h3>Contato</h3>
+                <p>📞 (16) 99999-9999</p>
+                <p>📍 Ribeirão Preto, SP</p>
+                <p>⏰ Dom a Qui: 18h - 00h</p>
+                <p>⏰ Sex e Sáb: 18h - 04h</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 Catatau Lanches. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

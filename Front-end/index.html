@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catatau Lanches</title>
+    <link rel="stylesheet" href="/Front-end/style.css">
+    <link rel="icon" type="image/png" href="./login/img/catatau.png" alt="favicon do catatau">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Ultra&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="top-banner">
+        ATENÇÃO! Confira nossos cupons promocionais disponíveis no app e site oficiais.
+    </div>
+
+    <header>
+        <nav class="navbar">
+            <div class="menu-hamburguer"><i class="material-icons">menu</i></div>
+            <div class="logonav">
+                <img src="./imagem/catatauimg.png" alt="Logo Catatau">
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Início</a></li>
+                <li><a href="./cardapio/lanches.html">Cardápio</a></li>
+                <li><a href="#">Cupons</a></li>
+                <li><a href="#">Contato</a></li>
+            </ul>
+
+            <!-- aqui precisa d euma logica para quando o usuario cadastrar isso 
+            desaparacer e virar outra coisa, no caso acesso para ele entrar na 
+            pagina das informações dele -->
+            <div class="user-area">
+                <a href="./cadastro/menu.html" class="btn-cadastro">Cadastre-se</a>
+                <span class="divisor">ou</span><br>
+                <a href="./login/Menu.html" class="btn-login">Faça seu login</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="hero">
+        <section class="bannerlanche">
+            <picture>
+                <source class="media" srcset="/Front-end/imagem/backlanche-media.png" media="(max-width: 768px)">
+                <img src="/Front-end/imagem/backlanche.png" alt="Banner Catatau Lanches">
+            </picture>
+        </section>
+    </main>
+
+        <footer class="main-footer">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h2 class="footer-logo">Catatau<span>Lanches</span></h2>
+                    <p>O verdadeiro podrão raiz desde 1992. Qualidade e tamanho que você conhece.</p>
+                </div>
+
+                <div class="footer-col">
+                    <h3>Navegação</h3>
+                    <ul>
+                        <li><a href="/cardapio/lanches.html">Cardápio</a></li>
+                        <li><a target="_blank" href="https://www.google.com/maps/place/Catatau+Lanches/@-21.1724811,-47.7973029,17z/data=!3m1!4b1!4m6!3m5!1s0x94b9bf0415c9171f:0xfafb21436bf0c0ac!8m2!3d-21.1724811!4d-47.7973029!16s%2Fg%2F1tgcs_33?entry=ttu&g_ep=EgoyMDI2MDUyNy4wIKXMDSoASAFQAw%3D%3D">Unidades</a></li>
+                        <li><a href="/menu/sobre-nos.html">Sobre nós</a></li>
+                        <li><a href="#">Trabalhe Conosco</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h3>Contato</h3>
+                    <p>📞 (16) 99999-9999</p>
+                    <p>📍 Ribeirão Preto, SP</p>
+                    <p>⏰ Dom a Qui: 18h - 00h</p>
+                    <p>⏰ Sex e Sáb: 18h - 04h</p>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 Catatau Lanches. Todos os direitos reservados.</p>
+            </div>
+        </footer>
+    </body>
+
+</html>

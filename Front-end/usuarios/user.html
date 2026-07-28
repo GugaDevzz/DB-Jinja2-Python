@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" type="image/png" href="./login/img/catatau.png" alt="favicon do catatau">
+        <link rel="stylesheet" href="/Front-end/usuarios/user.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
+        <link
+            href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Ultra&display=swap"
+            rel="stylesheet">
+            <title>Catatau lanches</title>
+    </head>
+    <body>
+        <div class="top-banner">
+            UAU! Com uma conta criada você pode favoritar seus lanches no catatau.
+        </div>
+        
+        <nav class="navbar">
+            <div class="nav-container">
+                <section class="logonav">
+                    <img src="/Front-end/imagem/catatauimg.png">
+                </section>
+                
+                <a 
+                    href="./index.html" class="voltar-menu">
+                    <i class="material-icons">arrow_back_ios</i>
+                    <span class="voltar">ir para o menu</span>
+                </a>
+            </div>
+        </nav>
+
+        <main class="container-card">
+
+            <div class="user-card">
+                <div class="user-card-header">
+                    <h2>Informações do Usuário</h2>
+                </div>
+
+                <table class="info-table">
+                    <!-- usuario.informação esse ponto serve para generalizar todos as variaveis, amarram todas as variaveis para terem algum em comum, assim podendo chamar todas
+                    de uma vez só com apenas um nome -->
+                    <tr>
+                        <th>Nome</th>
+                        <td>{{usuario.nome}}</td>
+                    </tr>
+                    <tr>
+                        <th>E-mail</th>
+                        <td>{{usuario.email}}</td>
+                    </tr>
+                    <tr>
+                        <th>CPF</th>
+                        <td>{{usuario.cpf}}</td>
+                    </tr>
+                    <tr>
+                        <th>Telefone</th>
+                        <td>{{usuario.tel}}</td>
+                    </tr>
+                    <tr>
+                        <th>Data de Nascimento</th>
+                        <td>15/08/2000</td>
+                    </tr>
+                    <tr>
+                        <th>Gênero</th>
+                        <td>Masculino</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- <div class="perfil-user">
+                <img src="" class="">
+                #jinja vai entrar aqui para mostrar quais informações exatas do usuario.
+                #tentar usar o tratamento de baixo, mas puxando o context na variável que ja existe com request.
+                #EX:  context={"erro": f"{nome}"}
+
+                if senha != repetir_senha:
+                    return templates.TemplateResponse(
+                        request=request,
+                        name="cadastro/menu.html",
+                        context={"erro": "As senhas não coincidem!"},  # Envia o erro para o HTML
+                    )
+            </div> -->
+
+        </main>
+
+        <footer class="main-footer">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h2 class="footer-logo">Catatau<span>Lanches</span></h2>
+                    <p>O verdadeiro podrão raiz desde 1992. Qualidade e tamanho que você conhece.</p>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Navegação</h3>
+                    <ul>
+                        <li><a href="/cardapio/lanches.html">Cardápio</a></li>
+                        <li><a target="_blank" href="https://www.google.com/maps/place/Catatau+Lanches/@-21.1724811,-47.7973029,17z/data=!3m1!4b1!4m6!3m5!1s0x94b9bf0415c9171f:0xfafb21436bf0c0ac!8m2!3d-21.1724811!4d-47.7973029!16s%2Fg%2F1tgcs_33?entry=ttu&g_ep=EgoyMDI2MDUyNy4wIKXMDSoASAFQAw%3D%3D">Unidades</a></li>
+                        <li><a href="/menu/sobre-nos.html">Sobre nós</a></li>
+                            <li><a href="#">Trabalhe Conosco</a></li>
+                        </ul>
+                    </div>
+
+                <div class="footer-col">
+                    <h3>Contato</h3>
+                    <p>📞 (16) 99999-9999</p>
+                    <p>📍 Ribeirão Preto, SP</p>
+                    <p>⏰ Dom a Qui: 18h - 00h</p>
+                    <p>⏰ Sex e Sáb: 18h - 04h</p>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 Catatau Lanches. Todos os direitos reservados.</p>
+            </div>
+        </footer>
+    </body>
+</html>

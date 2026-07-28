@@ -1,0 +1,454 @@
+::after,
+::before {
+  box-sizing: border-box;
+}
+
+:root {
+  --color-catatau-cream: #f5ebdc; 
+  --color-catatau-brown: #502314; 
+  --color-catatau-orange: #ff8732; 
+  --color-vermelhao: #c40700;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Montserrat', sans-serif;
+}
+
+body {
+  background-color: rgb(32, 32, 32);
+}
+
+.container-error {
+  background-color: rgb(37, 37, 37);
+  border: 1px solid rgb(56, 56, 56);
+  border-radius: 10px;
+  font-size: 200px;
+  overflow: hidden;
+  
+  /* Deixa o aviso flutuando sobre tudo */
+  position: fixed; 
+  bottom: 20px;       /* Distância do fundo da tela */
+  left: -100%;         /* Distância da esquerda da tela */
+  
+  width: 320px;       /* Um tamanho fixo para não ocupar 60% da tela */
+  padding: 15px;
+  z-index: 9999;      /* Garante que fique acima do formulário e background */
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
+  animation: animation-error 6s;
+}
+
+@keyframes animation-error {
+  0% {
+    left: -100%;
+  }
+
+  5%  {
+    left: 20px;
+  }
+
+  95%  {
+    left: 20px;
+  }
+
+  100% {
+    left: -100%;
+  }
+}
+
+/* Opcional: Ajuste para o texto dentro do container de erro */
+.container-error .error {
+  color: #fff;
+  font-size: 14px;
+  font-weight: normal;
+}
+
+.notificacion-error {
+  position: absolute;
+  width: 100%;
+  height: 13%;
+  bottom: 0;
+  right: 100%;
+  animation: animation-barra 6s linear;
+  /* animation funciona para fazer a parte da movimentação,
+  animação + nome do keyframe feito + tempo + linear para nao causar momentos mais rapidos ou lentos */
+}
+
+@keyframes animation-barra {
+  from {
+    right: 0%;
+  }
+
+  to {
+    right: 100%;
+  }
+}
+
+
+.top-banner {
+  background-color: var(--color-catatau-orange);
+  color: var(--color-catatau-brown);
+  text-align: center;
+  padding: 10px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 90px;
+  background-color: var(--color-catatau-cream);
+}
+
+.logonav img {
+  position: absolute;
+  top: 70px;
+  left: 200px;
+  width: 120px;
+  cursor: pointer;
+  border-radius: 10%;
+  border: solid 1px;
+  z-index: 15;
+}
+
+.voltar-menu {
+  text-decoration: none;/*remove o sublinhado*/
+  position: absolute;
+  font-size: 25px;
+  color: white;
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  text-decoration: none;
+  margin: 12%;
+  z-index: 50;
+}
+
+.voltar:hover{
+    text-decoration: underline; /*volta o sublinhado quando mouse passa*/
+}
+
+.quadrado {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  min-height: calc(100vh - 190px);
+  width: 100%;
+  position: relative;
+  padding: 40px 20px;
+}
+
+.quadrado::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  background-image: url('/Front-end/imagem/banner-login.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  
+  opacity: 0.5; 
+  z-index: 1;
+}
+
+.cadastro {
+  background: linear-gradient(#731919, #c40801, #ff3e38);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  max-width: 440px;
+  padding: 30px 25px;
+  border-radius: 16px;
+  z-index: 100;
+  border: black solid 2px;
+  box-shadow: 0px 8px 20px rgba(0,0,0,0.4);
+}
+
+.cadastro form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logocadastro img {
+  border-radius: 10%;
+  margin-top: 5px;
+  width: 80px;
+  height: auto;
+  display: block;
+}
+
+.primeiro {
+  color: white;
+  font-family: "Ultra", serif;
+  display: block;
+  text-align: center;
+  font-size: 32px;
+  margin-top: 10px;
+}
+
+.segundo {
+  text-align: center;
+  font-size: 13px;
+  margin-top: 2px;
+  margin-bottom: 20px;
+  color: #e0e0e0;
+}
+
+/* Form inputs */
+.nome, .email, #CPF, .senha, .repetir-senha {
+  color: white;
+  background-color: #c43340;
+  font-size: 14px;
+  padding: 10px 12px;
+  width: 85%;
+  border: 1px solid #ad1a06;
+  border-radius: 5px;
+  margin-bottom: 8px;
+  outline: none;
+}
+
+.nome::placeholder, .email::placeholder, #CPF::placeholder, .senha::placeholder, .repetir-senha::placeholder {
+  color: rgb(220, 220, 220);
+}
+
+/* Container do Telefone */
+.container-tel {
+  width: 85%;
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.ddd {
+  background-color: #c43340;
+  text-align: center;
+  padding: 10px 5px;
+  width: 30%;
+  color: white;
+  border: 1px solid #ad1a06;
+  border-radius: 5px;
+  font-size: 14px;
+  outline: none;
+}
+
+.ddd::placeholder {
+  color: rgb(220, 220, 220);
+}
+
+.numero {
+  background-color: #c43340;
+  font-size: 14px;
+  padding: 10px 12px;
+  width: 70%;
+  color: white;
+  border: 1px solid #ad1a06;
+  border-radius: 5px;
+  outline: none;
+}
+
+.numero::placeholder {
+  color: rgb(220, 220, 220);
+}
+
+/* Checkbox container */
+.container-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  gap: 6px;
+  margin: 10px 0 20px 0;
+  color: white;
+  width: 85%;
+}
+
+#box {
+  cursor: pointer;
+}
+
+/* Botões */
+.cadastrar {
+  text-align: center;
+  background-color: var(--color-catatau-orange);
+  font-size: 15px;
+  font-weight: bold;
+  padding: 12px;
+  width: 85%;
+  color: white;
+  border: 1px solid black;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.cadastrar:hover {
+  opacity: 0.9;
+}
+
+.existente {
+  text-align: center;
+  background-color: #c43340;
+  font-size: 14px;
+  padding: 10px;
+  width: 85%;
+  color: white;
+  border: 1px solid #ad1a06;
+  border-radius: 6px;
+  display: block;
+  box-sizing: border-box;
+  transition: background-color 0.2s;
+}
+
+.existente:hover {
+  background-color: #a82733;
+}
+
+/* Footer */
+.main-footer {
+    background-color: #502314; /* Marrom escuro para contrastar com o vermelho do site */
+    color: white;
+    padding: 40px 20px 10px 20px;
+    font-family: Arial, sans-serif;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 300px;
+}
+
+.footer-col {
+    flex: 1;
+}
+
+.footer-logo {
+    font-size: 24px;
+    color: #ffc107; /* Amarelo para destacar o nome */
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+.footer-logo span {
+    color: #bc0a00; /* Vermelho Catatau */
+}
+
+.footer-col h3 {
+    color: #ffc107;
+    margin-bottom: 20px;
+    font-size: 18px;
+    border-bottom: 2px solid #bc0a00;
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+.footer-col ul {
+    list-style: none;
+    /* padding: 0; */
+}
+
+.footer-col ul li {
+    margin-bottom: 10px;
+}
+
+.footer-col ul li a {
+    color: #fcf8f3;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.footer-col ul li a:hover {
+    color: #ffc107;
+    padding-left: 5px;
+}
+
+.footer-col p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #fcf8f3;
+}
+
+/* Barra de Direitos Autorais */
+.footer-bottom {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 12px;
+    color: gray;
+}
+
+/* Responsividade */
+@media (max-width: 1200px) {
+  .logonav img {
+    left: 5%;
+    top: 65px;
+    width: 100px;
+  }
+
+  .voltar-menu {
+    left: 2%;
+    top: 180px;
+    font-size: 20px;
+  }
+
+  .cadastro {
+    width: 90%;
+    margin: 20px auto;
+  }
+}
+
+@media (max-width: 900px) {
+  .navbar {
+    height: auto;
+    padding: 15px 0;
+  }
+
+  .nav-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .logonav img {
+    position: static;
+    width: 90px;
+    margin: 0 auto;
+    display: block;
+  }
+
+  .voltar-menu {
+    position: static;
+    margin-top: 10px;
+    font-size: 18px;
+  }
+
+  .footer-container {
+    flex-direction: column;
+    text-align: center;
+    gap: 20px;
+  }
+
+  .footer-col h3 {
+    display: block;
+    margin: 0 auto 10px auto;
+  }
+}
