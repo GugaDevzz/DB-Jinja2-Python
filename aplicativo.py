@@ -15,12 +15,21 @@ templates = Jinja2Templates(directory="Front-end")
 #define onde o jinja vai agir.
 app.mount("/Front-end", StaticFiles(directory="Front-end"), name="static")
 
-#just to open the register page
-@app.get("/cadastro")
-def pagina_cadastro(request: Request):
+#just to open the menu page
+@app.get("/catatau")
+def pagina_menu(request: Request):
     return templates.TemplateResponse(
     request=request, 
-    name="cadastro/menu.html"
+    name="index.html"
+)
+
+#just to open the profile page
+@app.get("/usuario")
+def pagina_profile(request: Request):
+    return templates.TemplateResponse(
+        request=request, 
+        name="usuarios/user.html",
+        context={"erro": "As senhas não coincidem!"}
 )
 
 #just to open the login page
@@ -31,13 +40,33 @@ def pagina_login(request: Request):
     name="login/Menu.html"
 )
 
-#just to open the profile page
-@app.get("/usuario")
-def pagina_profile(request: Request):
+@app.post("/login")
+def verify_login(
+    request: Request,
+    nome: str = Form(...), # Bate com o name="nome" do HTML
+    senha: str = Form(...),
+    db: Session = Depends(get_db) # Sua injeção de dependência do banco
+):
+    nameORemail_onDB = db.query(CadastroTable).filter(CadastroTable.nome == nome).first() and db.query(CadastroTable).filter(CadastroTable.senha == senha).first()
+    if nameORemail_onDB:
+        return templates.TemplateResponse(
+            request=request, 
+            name="index.html",
+            context={"right": "Login feito com sucesso"}
+        )
+    else:
+        return templates.TemplateResponse(
+            request=request, 
+            name="login/Menu.html",
+            context={"erro": "Falha ao logar"}
+        )
+    
+#just to open the register page
+@app.get("/cadastro")
+def pagina_cadastro(request: Request):
     return templates.TemplateResponse(
-        request=request, 
-        name="usuarios/user.html",
-        context={"erro": "As senhas não coincidem!"}
+    request=request, 
+    name="cadastro/menu.html"
 )
 
 @app.post("/cadastro")
@@ -68,7 +97,7 @@ def cadastrar_usuario(
         return templates.TemplateResponse(
             request=request,
             name="cadastro/menu.html",
-            context={"erro": "Esse usuário já existe!\n Tente fazer seu login. "},  # Envia o erro para o HTML
+            context={"erro": "Esse usuário já existe!\n Tente fazer seu login. "}  # Envia o erro para o HTML
         )
 
     # Juntando o DDD e o Número em uma única string

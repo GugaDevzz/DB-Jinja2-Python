@@ -133,6 +133,27 @@ body {
     text-decoration: underline; /*volta o sublinhado quando mouse passa*/
 }
 
+/* Remove a cor de link padrão, sublinhado e efeitos de borda */
+.img-link {
+    text-decoration: none;
+    color: transparent;
+    display: inline-block;
+    outline: none;
+    border: none;
+}
+
+.img-link img {
+    border: none;
+    outline: none;
+    display: block; /* Remove folgas de linha sob a imagem */
+}
+
+.logonav, .nav-container {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
 .quadrado {
   display: flex;
   justify-content: center;

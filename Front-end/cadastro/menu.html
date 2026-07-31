@@ -25,11 +25,13 @@
     <nav class="navbar">
         <div class="nav-container">
             <section class="logonav">
-                <img src="/Front-end/imagem/catatauimg.png">
+                <a href="/catatau" class="img-link">
+                    <img src="/Front-end/imagem/catatauimg.png">
+                </a>
             </section>
             
             <a 
-                href="./index.html" class="voltar-menu">
+                href="/catatau" class="voltar-menu">
                 <i class="material-icons">arrow_back_ios</i>
                 <span class="voltar">Voltar</span>
             </a>
@@ -39,9 +41,7 @@
 <section class="quadrado">
     <section class="cadastro">
         <div class="logocadastro">
-            <a href="./index.html">
                 <img src="/Front-end/imagem/catatauimg.png">
-            </a>
         </div>
         <h1 class="primeiro">Criar uma conta</h1>
         
@@ -87,7 +87,7 @@
                     <input type="tel"
                     placeholder="99999-9999"
                     class="numero"
-                    maxlength="10" 
+                    maxlength="11" 
                     name="numero" 
                     required>
                     <!-- formato para o telefone: pattern="9[0-9]{4}-[0-9]{4} -->
@@ -113,9 +113,7 @@
                 <a href="/login" class="existente" style="text-decoration: none">Entrar em conta existente</a>
                 {% if erro %}
                     <div class="container-error">
-                        <h3 class="error">
-                            {{ erro }}
-                        </h3>
+                        <h3 class="error"> {{ erro }} </h3>
                         <img src="/Front-end/cadastro/img/faixa-erro.png" alt="faixa-erro" class="notificacion-error">
                     </div>
                 {% endif %}

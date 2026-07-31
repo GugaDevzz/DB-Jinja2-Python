@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catatau Lanches</title>
-    <link rel="stylesheet" href="/Front-end/cadastro/stylecss.css">
+    <link rel="stylesheet" href="/Front-end/login/menucss.css">
     <link rel="icon" type="image/png" href="/Front-end/imagem/catatauimg.png" alt="favicon do catatau">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,7 +29,7 @@
             </section>
             
             <a 
-                href="/Front-end/index.html" class="voltar-menu">
+                href="/catatau" class="voltar-menu">
                 <i class="material-icons">arrow_back_ios</i>
                 <span class="voltar">Voltar</span>
             </a>
@@ -48,7 +48,7 @@
         <div class="segundo">Bem vindo ao Catatau Lanches!</div>
     
         
-        <form action="/cadastro" method="POST">
+        <form action="/login" method="POST">
             
             <!-- Adicionado name="nome" -->
             <input type="text" placeholder="Nome completo" 
@@ -70,14 +70,21 @@
             </div>
             <button type="submit" class="cadastrar" style="text-decoration: none">Entrar</button>
             <a href="/login" class="existente" style="text-decoration: none">Criar uma conta</a>
-            {% if erro %}
-                <div class="container-error">
-                    <h3 class="error">
-                        {{ erro }}
-                    </h3>
-                    <img src="/Front-end/cadastro/img/faixa-erro.png" alt="faixa-erro" class="notificacion-error">
-                </div>
-            {% endif %}
+
+                {% if right %}
+                    <div class="container-right">
+                        <h3 class="error"> {{ right }} </h3>
+                        <img src="/Front-end/login/img/faixa-certo.png" alt="faixa-right" class="notificacion-right">
+                    </div>
+                {% endif %}
+
+                {% if erro %}
+                    <div class="container-error">
+                        <h3 class="error"> {{ erro }} </h3>
+                        <img src="/Front-end/cadastro/img/faixa-erro.png" alt="faixa-erro" class="notificacion-error">
+                    </div>
+                {% endif %}
+
             </form>
             
         </section>
