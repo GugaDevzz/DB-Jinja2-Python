@@ -7,6 +7,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles # 1. Importe o StaticFile
 import time
 import Tabelas
+from sqlalchemy import or_
 
 app = FastAPI()
 
@@ -43,17 +44,38 @@ def pagina_login(request: Request):
 @app.post("/login")
 def verify_login(
     request: Request,
-    nome: str = Form(...), # Bate com o name="nome" do HTML
+    login_input: str = Form(...), # Bate com o name="nome" do HTML
     senha: str = Form(...),
     db: Session = Depends(get_db) # Sua injeção de dependência do banco
 ):
-    nameORemail_onDB = db.query(CadastroTable).filter(CadastroTable.nome == nome).first() and db.query(CadastroTable).filter(CadastroTable.senha == senha).first()
-    if nameORemail_onDB:
+    
+    usuario_db = db.query(CadastroTable).filter(
+        or_(
+            CadastroTable.nome == login_input,
+            CadastroTable.email == login_input
+        ),
+        CadastroTable.senha == senha
+    ).first()
+
+    if usuario_db:
+            
+        dados_usuario = {
+            "id": usuario_db.id,
+            "nome": usuario_db.nome,
+            "email": usuario_db.email,
+            "cpf": usuario_db.cpf,
+            "telefone": usuario_db.telefone,
+            "data_nascimento": "Não informado",
+            "genero": "Não informado"
+        }   
+            
         return templates.TemplateResponse(
             request=request, 
             name="index.html",
-            context={"right": "Login feito com sucesso"}
+            next="usuarios/user.html",
+            context={"usuario": dados_usuario, "right": "Login feito com sucesso"}
         )
+    
     else:
         return templates.TemplateResponse(
             request=request, 

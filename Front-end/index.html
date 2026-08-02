@@ -33,13 +33,18 @@
                 <li><a href="#">Contato</a></li>
             </ul>
 
-            <!-- aqui precisa d euma logica para quando o usuario cadastrar isso 
-            desaparacer e virar outra coisa, no caso acesso para ele entrar na 
-            pagina das informações dele -->
             <div class="user-area">
+            {% if usuario %}
+                <a href="/usuario" class="profile-link" title="Meu Perfil">
+                <i class="material-icons">account_circle</i>
+
+                </a>
+            {% else %}
                 <a href="/cadastro" class="btn-cadastro">Cadastre-se</a>
                 <span class="divisor">ou</span><br>
                 <a href="/login" class="btn-login">Faça seu login</a>
+            {% endif %}
+            
             </div>
         </nav>
     </header>

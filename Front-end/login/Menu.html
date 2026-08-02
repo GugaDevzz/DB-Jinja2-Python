@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catatau Lanches</title>
-    <link rel="stylesheet" href="/Front-end/login/menucss.css">
+    <link rel="stylesheet" href="/Front-end/cadastro/stylecss.css">
     <link rel="icon" type="image/png" href="/Front-end/imagem/catatauimg.png" alt="favicon do catatau">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,7 +25,9 @@
     <nav class="navbar">
         <div class="nav-container">
             <section class="logonav">
-                <img src="/Front-end/imagem/catatauimg.png">
+                <a href="/catatau" class="img-link">
+                    <img src="/Front-end/imagem/catatauimg.png">
+                </a>
             </section>
             
             <a 
@@ -39,11 +41,9 @@
 <section class="quadrado">
     <section class="cadastro">
         <div class="logocadastro">
-            <a href="/Front-end/index.html">
                 <img src="/Front-end/imagem/catatauimg.png">
-            </a>
         </div>
-        <h1 class="primeiro">Criar uma conta</h1>
+        <h1 class="primeiro">Fazer login</h1>
         
         <div class="segundo">Bem vindo ao Catatau Lanches!</div>
     
@@ -52,38 +52,40 @@
             
             <!-- Adicionado name="nome" -->
             <input type="text" placeholder="Nome completo" 
-            title="Digite seu nome completo" 
+            title="Digite seu nome ou email"
+            type="text" 
             maxlength="25" 
             class="nome" 
-            name="nome" 
+            name="login_input" 
             required>
-            
+                
             <!-- Adicionado name="senha" -->
             <input type="password" placeholder="Senha"
+            type="password"
             class="senha"
             name="senha"
             required>
-
+                
             <div class="container-box">
                 <input type="checkbox" id="box" name="box">
-                <label for="lembrar">Mantenha-me conectado</label>
+                <label for="lembrar">Quero receber novidades, Descontos e promoções</label>
             </div>
             <button type="submit" class="cadastrar" style="text-decoration: none">Entrar</button>
-            <a href="/login" class="existente" style="text-decoration: none">Criar uma conta</a>
+            <a href="/cadastro" class="existente" style="text-decoration: none">Criar uma conta</a>
 
-                {% if right %}
-                    <div class="container-right">
-                        <h3 class="error"> {{ right }} </h3>
-                        <img src="/Front-end/login/img/faixa-certo.png" alt="faixa-right" class="notificacion-right">
-                    </div>
-                {% endif %}
+            {% if right %}
+                <div class="container-right">
+                    <h3 class="error"> {{ right }} </h3>
+                    <img src="/Front-end/login/img/faixa-certo.png" alt="faixa-right" class="notificacion-right">
+                </div>
+            {% endif %}
 
-                {% if erro %}
-                    <div class="container-error">
-                        <h3 class="error"> {{ erro }} </h3>
-                        <img src="/Front-end/cadastro/img/faixa-erro.png" alt="faixa-erro" class="notificacion-error">
-                    </div>
-                {% endif %}
+            {% if erro %}
+                <div class="container-error">
+                    <h3 class="error"> {{ erro }} </h3>
+                    <img src="/Front-end/cadastro/img/faixa-erro.png" alt="faixa-erro" class="notificacion-error">
+                </div>
+            {% endif %}
 
             </form>
             
@@ -123,3 +125,6 @@
 </body>
 
 </html>
+
+
+
