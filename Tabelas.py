@@ -9,4 +9,6 @@ class CadastroTable(Base):
     email = Column(String(150), unique=True)
     cpf = Column(String(255), nullable=False)
     telefone = Column(String(20), unique=True)
+    # data_nascimento = Column(String(20), nullable=True)
+    # genero = Column(String(20), nullable=True)
     senha = Column(String(255), nullable=False)

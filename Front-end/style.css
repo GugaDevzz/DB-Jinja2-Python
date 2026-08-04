@@ -81,6 +81,10 @@ body {
   font-weight: bold;
 }
 
+.profile_link{
+  width: 30px;
+}
+
 .hero {
   width: 100%;
 }

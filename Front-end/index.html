@@ -34,8 +34,8 @@
             </ul>
 
             <div class="user-area">
-            {% if usuario %}
-                <a href="/usuario" class="profile-link" title="Meu Perfil">
+            {% if page_user %}
+                <a href="/usuario/{{page_user.nome}}" class="profile-link" title="Meu Perfil">
                 <i class="material-icons">account_circle</i>
 
                 </a>

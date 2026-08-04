@@ -55,32 +55,18 @@
                     </tr>
                     <tr>
                         <th>Telefone</th>
-                        <td>{{usuario.tel}}</td>
+                        <td>{{usuario.telefone}}</td>
                     </tr>
                     <tr>
                         <th>Data de Nascimento</th>
-                        <td>{{usuario.data}}</td>
+                        <td>{{usuario.data_nascimento}}</td>
                     </tr>
                     <tr>
                         <th>Gênero</th>
-                        <td>{{usuario.gen}}</td>
+                        <td>{{usuario.genero}}</td>
                     </tr>
                 </table>
             </div>
-
-            <!-- <div class="perfil-user">
-                <img src="" class="">
-                #jinja vai entrar aqui para mostrar quais informações exatas do usuario.
-                #tentar usar o tratamento de baixo, mas puxando o context na variável que ja existe com request.
-                #EX:  context={"erro": f"{nome}"}
-
-                if senha != repetir_senha:
-                    return templates.TemplateResponse(
-                        request=request,
-                        name="cadastro/menu.html",
-                        context={"erro": "As senhas não coincidem!"},  # Envia o erro para o HTML
-                    )
-            </div> -->
 
         </main>
 

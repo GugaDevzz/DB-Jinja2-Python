@@ -5,8 +5,6 @@ from PYtoBD.Banco import get_db, Base, engine
 from sqlalchemy.orm import Session
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles # 1. Importe o StaticFile
-import time
-import Tabelas
 from sqlalchemy import or_
 
 app = FastAPI()
@@ -15,6 +13,10 @@ templates = Jinja2Templates(directory="Front-end")
 
 #define onde o jinja vai agir.
 app.mount("/Front-end", StaticFiles(directory="Front-end"), name="static")
+
+@app.get("/")
+def home():
+    return {"status": "Servidor no ar"}
 
 #just to open the menu page
 @app.get("/catatau")
@@ -25,13 +27,38 @@ def pagina_menu(request: Request):
 )
 
 #just to open the profile page
-@app.get("/usuario")
-def pagina_profile(request: Request):
+@app.get("/usuario/{nome}")
+def pagina_profile(
+    request: Request,
+    nome: str,
+    db: Session = Depends(get_db)
+):
+    
+    usuario_db = db.query(CadastroTable).filter(CadastroTable.nome == nome).first()
+
+    if not usuario_db:
+        return templates.TemplateResponse(
+            request=request, 
+            name="login/Menu.html",
+            context={"erro": "Usuário não encontrado."}
+        )
+
+    # Monta o dicionário com as informações trazidas da tabela CadastroTable
+    dados_usuario = {
+        "nome": usuario_db.nome,
+        "email": usuario_db.email,
+        "cpf": usuario_db.cpf,
+        "telefone": usuario_db.telefone,
+        "data_nascimento": "Não informado",
+        "genero": "Não informado"
+    }
+    
+    # Renderiza a tela usuarios/user.html (imagem 3) preenchendo a tabela
     return templates.TemplateResponse(
         request=request, 
         name="usuarios/user.html",
-        context={"erro": "As senhas não coincidem!"}
-)
+        context={"usuario": dados_usuario}
+    )
 
 #just to open the login page
 @app.get("/login")
@@ -44,11 +71,11 @@ def pagina_login(request: Request):
 @app.post("/login")
 def verify_login(
     request: Request,
-    login_input: str = Form(...), # Bate com o name="nome" do HTML
+    login_input: str = Form(...),
     senha: str = Form(...),
-    db: Session = Depends(get_db) # Sua injeção de dependência do banco
+    db: Session = Depends(get_db)
 ):
-    
+    # Busca por Nome ou Email + Senha
     usuario_db = db.query(CadastroTable).filter(
         or_(
             CadastroTable.nome == login_input,
@@ -58,30 +85,22 @@ def verify_login(
     ).first()
 
     if usuario_db:
-            
-        dados_usuario = {
-            "id": usuario_db.id,
-            "nome": usuario_db.nome,
-            "email": usuario_db.email,
-            "cpf": usuario_db.cpf,
-            "telefone": usuario_db.telefone,
-            "data_nascimento": "Não informado",
-            "genero": "Não informado"
-        }   
-            
+        # Passa o OBJETO COMPLETO 'usuario_db' para o Jinja poder ler {{ page_user.nome }}
         return templates.TemplateResponse(
-            request=request, 
+            request=request,
             name="index.html",
-            next="usuarios/user.html",
-            context={"usuario": dados_usuario, "right": "Login feito com sucesso"}
+            context={
+                "page_user": usuario_db, #o python entende que é o nome pq la no html ta chamando variavel.nome, esse .nome especifica quem da lista usuario_db ele chama
+                "right": "Login feito com sucesso" #validação de dados carretos nao funcionou
+            }
         )
     
-    else:
-        return templates.TemplateResponse(
-            request=request, 
-            name="login/Menu.html",
-            context={"erro": "Falha ao logar"}
-        )
+    return templates.TemplateResponse(
+        request=request, 
+        name="login/Menu.html",
+        context={"erro": "Usuário ou senha incorretos!"}
+    )
+
     
 #just to open the register page
 @app.get("/cadastro")
@@ -137,6 +156,7 @@ def cadastrar_usuario(
     db.add(novo_usuario)
     db.commit()
 
+    #lista apontada para user.html, jinja acionado com {{}}
     dados_usuario = {
         "nome": nome,
         "cpf": CPF,
