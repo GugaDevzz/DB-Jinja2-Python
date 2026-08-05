@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends, HTTPException, Form, Request
 from pydantic import BaseModel
-from Tabelas import CadastroTable
-from PYtoBD.Banco import get_db, Base, engine
+from models.Tabelas import CadastroTable
+from database import get_db
 from sqlalchemy.orm import Session
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles # 1. Importe o StaticFile
@@ -9,10 +9,10 @@ from sqlalchemy import or_
 
 app = FastAPI()
 
-templates = Jinja2Templates(directory="Front-end")
+templates = Jinja2Templates(directory="static")
 
 #define onde o jinja vai agir.
-app.mount("/Front-end", StaticFiles(directory="Front-end"), name="static")
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.get("/")
 def home():

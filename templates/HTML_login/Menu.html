@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catatau Lanches</title>
-    <link rel="stylesheet" href="/Front-end/cadastro/stylecss.css">
-    <link rel="icon" type="image/png" href="/Front-end/imagem/catatauimg.png" alt="favicon do catatau">
+    <link rel="stylesheet" href="/static/css/CSS_login/menucsss.css">
+    <link rel="icon" type="image/png" href="/static/imagens/catatauimg.png" alt="favicon do catatau">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,7 +26,7 @@
         <div class="nav-container">
             <section class="logonav">
                 <a href="/catatau" class="img-link">
-                    <img src="/Front-end/imagem/catatauimg.png">
+                    <img src="/static/imagens/catatauimg.png">
                 </a>
             </section>
             
@@ -41,7 +41,7 @@
 <section class="quadrado">
     <section class="cadastro">
         <div class="logocadastro">
-                <img src="/Front-end/imagem/catatauimg.png">
+                <img src="/static/imagens/catatauimg.png">
         </div>
         <h1 class="primeiro">Fazer login</h1>
         
@@ -76,14 +76,14 @@
             {% if right %}
                 <div class="container-right">
                     <h3 class="error"> {{ right }} </h3>
-                    <img src="/Front-end/login/img/faixa-certo.png" alt="faixa-right" class="notificacion-right">
+                    <img src="/static/imagens/faixa-certo.png" alt="faixa-right" class="notificacion-right">
                 </div>
             {% endif %}
 
             {% if erro %}
                 <div class="container-error">
                     <h3 class="error"> {{ erro }} </h3>
-                    <img src="/Front-end/cadastro/img/faixa-erro.png" alt="faixa-erro" class="notificacion-error">
+                    <img src="/static/imagens/faixa-erro.png" alt="faixa-erro" class="notificacion-error">
                 </div>
             {% endif %}
 
@@ -102,9 +102,9 @@
             <div class="footer-col">
                 <h3>Navegação</h3>
                 <ul>
-                    <li><a href="/cardapio/lanches.html">Cardápio</a></li>
+                    <li><a href="/templates/HTML_cardapio/lanches.html">Cardápio</a></li>
                     <li><a target="_blank" href="https://www.google.com/maps/place/Catatau+Lanches/@-21.1724811,-47.7973029,17z/data=!3m1!4b1!4m6!3m5!1s0x94b9bf0415c9171f:0xfafb21436bf0c0ac!8m2!3d-21.1724811!4d-47.7973029!16s%2Fg%2F1tgcs_33?entry=ttu&g_ep=EgoyMDI2MDUyNy4wIKXMDSoASAFQAw%3D%3D">Unidades</a></li>
-                    <li><a href="/menu/sobre-nos.html">Sobre nós</a></li>
+                    <li><a href="/templates/HTML_login/Menu.html">Sobre nós</a></li>
                         <li><a href="#">Trabalhe Conosco</a></li>
                     </ul>
                 </div>
