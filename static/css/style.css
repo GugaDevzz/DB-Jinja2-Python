@@ -39,6 +39,100 @@ body {
   height: 120px;
 }
 
+.button-profile {
+  border: none;
+  background: white;
+  border-radius: 10px;
+  padding: 5px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  /* Estiliza o label para parecer um botão clicável */
+  cursor: pointer;
+  display: inline-block;
+
+}
+
+.material-icons {
+    font-size: 40px !important; /* Altere este valor para o tamanho desejado */
+}
+
+/* Estado Padrão: Escondido */
+.aba_profile {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e0e0e0;
+  margin-top: 8px;
+  z-index: 999;
+}
+
+/* Esconde o checkbox real da tela */
+.menu-checkbox {
+  display: none;
+}
+
+/* Estado inicial do Menu: Invisível */
+.aba_profile {
+  display: none; /* Essa linha é quem faz de fato a aba do usuario fechar */
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 180px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e0e0e0;
+  margin-top: 8px;
+  z-index: 999;
+}
+
+/* MÁGICA DO CSS: Quando o checkbox for marcado (:checked), mostra a aba com keyframes */
+.menu-checkbox:checked ~ .aba_profile {
+  display: block;
+  animation: animation-profile 0.25s ease-out forwards;
+}
+
+/* Keyframe de abertura */
+@keyframes animation-profile {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Estilização interna simples */
+.aba_profile ul {
+  list-style: none;
+  margin: 0;
+  padding: 8px 0;
+}
+
+.aba_profile li a {
+  display: block;
+  padding: 10px 16px;
+  color: #333333;
+  text-decoration: none;
+  font-size: 14px;
+  font-family: sans-serif;
+}
+
+.aba_profile li hr {
+  border: 0;
+  border-top: 1px solid #e0e0e0;
+  margin: 4px 0;
+}
+
+.aba_profile li a.logout {
+  color: #d9534f;
+}
+
+
+
 .logonav img {
   position: absolute;
   top: 10%;
@@ -79,10 +173,6 @@ body {
   text-decoration: underline;
   color: var(--color-catatau-brown);
   font-weight: bold;
-}
-
-.profile_link{
-  width: 30px;
 }
 
 .hero {

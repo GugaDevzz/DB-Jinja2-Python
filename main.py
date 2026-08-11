@@ -1,15 +1,17 @@
 from fastapi import FastAPI, Depends, HTTPException, Form, Request
 from pydantic import BaseModel
 from models.Tabelas import CadastroTable
-from database import get_db
+from database.Banco import get_db
 from sqlalchemy.orm import Session
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles # 1. Importe o StaticFile
 from sqlalchemy import or_
+from fastapi.responses import RedirectResponse, HTMLResponse
+from starlette import status
 
 app = FastAPI()
 
-templates = Jinja2Templates(directory="static")
+templates = Jinja2Templates(directory="templates")
 
 #define onde o jinja vai agir.
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -18,16 +20,31 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 def home():
     return {"status": "Servidor no ar"}
 
-#just to open the menu page
-@app.get("/catatau")
-def pagina_menu(request: Request):
-    return templates.TemplateResponse(
-    request=request, 
-    name="index.html"
-)
 
-#just to open the profile page
-@app.get("/usuario/{nome}")
+@app.get("/catatau/{nome}")
+def pagina_menu(request: Request, nome: str, db: Session = Depends(get_db)):
+    # Busca o usuário no banco
+    usuario_banco = db.query(CadastroTable).filter(CadastroTable.nome == nome).first()
+    
+    return templates.TemplateResponse(
+        request=request,
+        name="index.html",
+        context={
+            "page_user": usuario_banco  # <--- Aqui está a variável que o HTML espera!
+        }
+    )
+
+@app.get("/catatau")
+def pagina_menu_deslogado(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="index.html",
+        context={"page_user": None}
+    )
+
+#responseclass vai entender qual o endreço que ja ta sendo 
+#adiantado para ser entendido, que no caso ta sendo passado pelo return do /cadastro
+@app.get("/usuario/{nome}", response_class=HTMLResponse) 
 def pagina_profile(
     request: Request,
     nome: str,
@@ -36,13 +53,6 @@ def pagina_profile(
     
     usuario_db = db.query(CadastroTable).filter(CadastroTable.nome == nome).first()
 
-    if not usuario_db:
-        return templates.TemplateResponse(
-            request=request, 
-            name="login/Menu.html",
-            context={"erro": "Usuário não encontrado."}
-        )
-
     # Monta o dicionário com as informações trazidas da tabela CadastroTable
     dados_usuario = {
         "nome": usuario_db.nome,
@@ -50,15 +60,16 @@ def pagina_profile(
         "cpf": usuario_db.cpf,
         "telefone": usuario_db.telefone,
         "data_nascimento": "Não informado",
-        "genero": "Não informado"
+        "genero": "Não informado",
     }
     
-    # Renderiza a tela usuarios/user.html (imagem 3) preenchendo a tabela
+    # Renderiza a tela usuarios/user.html preenchendo a tabela
     return templates.TemplateResponse(
         request=request, 
         name="usuarios/user.html",
         context={"usuario": dados_usuario}
     )
+
 
 #just to open the login page
 @app.get("/login")
@@ -166,11 +177,9 @@ def cadastrar_usuario(
         "genero": "Não informado"
     }
 
-    return templates.TemplateResponse(
-        request=request,
-        name="usuarios/user.html", # Nome do seu arquivo HTML de perfil
-        context={"usuario": dados_usuario} # == "oq vem do {{html}}": oq o usuario ve 
-        #apenas usuario pq todas as tags estao com esse prefixo EX: usuario.nome
+    return RedirectResponse(
+        url=f"/usuario/{nome}", 
+        status_code=status.HTTP_303_SEE_OTHER # nao é necessário colocar esse, vai rodar sem tambem!
     )
 
 

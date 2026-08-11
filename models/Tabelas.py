@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Float
-from database import Base
+from database.Banco import Base
 
 class CadastroTable(Base):
     __tablename__ = "cadastro"
@@ -10,3 +10,4 @@ class CadastroTable(Base):
     cpf = Column(String(255), nullable=False)
     telefone = Column(String(20), unique=True)
     senha = Column(String(255), nullable=False)
+    

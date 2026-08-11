@@ -1,5 +1,4 @@
-from PYtoBD.Banco import Base, engine
-import Tabelas
+from Banco import Base, engine
 
 #------------------------------------------------------
 # AVISO: Antes de testar e mandar as tabelas, coloca

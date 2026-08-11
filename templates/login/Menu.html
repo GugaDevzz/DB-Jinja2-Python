@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catatau Lanches</title>
-    <link rel="stylesheet" href="/static/css/CSS_login/menucsss.css">
+    <link rel="stylesheet" href="/static/css/login/menucss.css">
     <link rel="icon" type="image/png" href="/static/imagens/catatauimg.png" alt="favicon do catatau">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -32,7 +32,7 @@
             
             <a 
                 href="/catatau" class="voltar-menu">
-                <i class="material-icons">arrow_back_ios</i>
+                    <i class="material-icons">arrow_back_ios</i>
                 <span class="voltar">Voltar</span>
             </a>
         </div>
@@ -48,44 +48,44 @@
         <div class="segundo">Bem vindo ao Catatau Lanches!</div>
     
         
-        <form action="/login" method="POST">
-            
-            <!-- Adicionado name="nome" -->
-            <input type="text" placeholder="Nome completo" 
-            title="Digite seu nome ou email"
-            type="text" 
-            maxlength="25" 
-            class="nome" 
-            name="login_input" 
-            required>
+            <form action="/login" method="POST">
                 
-            <!-- Adicionado name="senha" -->
-            <input type="password" placeholder="Senha"
-            type="password"
-            class="senha"
-            name="senha"
-            required>
-                
-            <div class="container-box">
-                <input type="checkbox" id="box" name="box">
-                <label for="lembrar">Quero receber novidades, Descontos e promoções</label>
-            </div>
-            <button type="submit" class="cadastrar" style="text-decoration: none">Entrar</button>
-            <a href="/cadastro" class="existente" style="text-decoration: none">Criar uma conta</a>
-
-            {% if right %}
-                <div class="container-right">
-                    <h3 class="error"> {{ right }} </h3>
-                    <img src="/static/imagens/faixa-certo.png" alt="faixa-right" class="notificacion-right">
+                <!-- Adicionado name="nome" -->
+                <input type="text" placeholder="Nome completo" 
+                title="Digite seu nome ou email"
+                type="text" 
+                maxlength="25" 
+                class="nome" 
+                name="login_input" 
+                required>
+                    
+                <!-- Adicionado name="senha" -->
+                <input type="password" placeholder="Senha"
+                type="password"
+                class="senha"
+                name="senha"
+                required>
+                    
+                <div class="container-box">
+                    <input type="checkbox" id="box" name="box">
+                    <label for="lembrar">Quero receber novidades, Descontos e promoções</label>
                 </div>
-            {% endif %}
+                <button type="submit" class="cadastrar" style="text-decoration: none">Entrar</button>
+                <a href="/cadastro" class="existente" style="text-decoration: none">Criar uma conta</a>
 
-            {% if erro %}
-                <div class="container-error">
-                    <h3 class="error"> {{ erro }} </h3>
-                    <img src="/static/imagens/faixa-erro.png" alt="faixa-erro" class="notificacion-error">
-                </div>
-            {% endif %}
+                {% if right %}
+                    <div class="container-right">
+                        <h3 class="error"> {{ right }} </h3>
+                        <img src="/static/imagens/faixa-certo.png" alt="faixa-right" class="notificacion-right">
+                    </div>
+                {% endif %}
+
+                {% if erro %}
+                    <div class="container-error">
+                        <h3 class="error"> {{ erro }} </h3>
+                        <img src="/static/imagens/faixa-erro.png" alt="faixa-erro" class="notificacion-error">
+                    </div>
+                {% endif %}
 
             </form>
             

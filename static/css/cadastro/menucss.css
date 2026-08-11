@@ -86,7 +86,6 @@ body {
   }
 }
 
-
 .top-banner {
   background-color: var(--color-catatau-orange);
   color: var(--color-catatau-brown);
@@ -173,7 +172,7 @@ body {
   width: 100%;
   height: 100%;
 
-  background-image: url('/Front-end/imagem/banner-login.png');
+  background-image: url('/static/imagens/banner-login.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
