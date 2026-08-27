@@ -21,6 +21,14 @@ def home():
     return {"status": "Servidor no ar"}
 
 
+@app.get("/cardapio")
+def pagina_menu_deslogado(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="cardapio/lanches.html"
+    )
+
+
 @app.get("/catatau/{nome}")
 def pagina_menu(request: Request, nome: str, db: Session = Depends(get_db)):
     # Busca o usuário no banco
@@ -30,7 +38,7 @@ def pagina_menu(request: Request, nome: str, db: Session = Depends(get_db)):
         request=request,
         name="index.html",
         context={
-            "page_user": usuario_banco  # <--- Aqui está a variável que o HTML espera!
+            "page_user": usuario_banco  # <--- Aqui está a variável que o HTML espera
         }
     )
 
@@ -79,7 +87,7 @@ def pagina_login(request: Request):
     name="login/Menu.html"
 )
 
-@app.post("/login")
+@app.post("/login", response_class=HTMLResponse)    #response serve para o html que esta no retorno tomar conta do endereço, nao esqueça, sem isso a pagina muda mas ainda fica no /login
 def verify_login(
     request: Request,
     login_input: str = Form(...),
@@ -101,8 +109,7 @@ def verify_login(
             request=request,
             name="index.html",
             context={
-                "page_user": usuario_db, #o python entende que é o nome pq la no html ta chamando variavel.nome, esse .nome especifica quem da lista usuario_db ele chama
-                "right": "Login feito com sucesso" #validação de dados carretos nao funcionou
+                "page_user": usuario_db  # <--- Aqui está a variável que o HTML espera
             }
         )
     
