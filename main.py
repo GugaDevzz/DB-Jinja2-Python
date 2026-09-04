@@ -1,5 +1,3 @@
-from fastapi import FastAPI, Depends, HTTPException, Form, Request
-from pydantic import BaseModel
 from models.Tabelas import CadastroTable
 from database.Banco import get_db
 from sqlalchemy.orm import Session
@@ -8,11 +6,12 @@ from fastapi.staticfiles import StaticFiles # 1. Importe o StaticFile
 from sqlalchemy import or_
 from fastapi.responses import RedirectResponse, HTMLResponse
 from starlette import status
+from fastapi import FastAPI, Depends, Form, Request
+from starlette import status
 
 app = FastAPI()
 
 templates = Jinja2Templates(directory="templates")
-
 #define onde o jinja vai agir.
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
@@ -20,12 +19,26 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 def home():
     return {"status": "Servidor no ar"}
 
+@app.get("/lanche1")
+def pagina_lanche1(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="cardapio/envlanches/Whopper®Grogu.html"
+    )
+
+@app.get("/contato")
+def pagina_contato(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="contato/sobre-nos.html"
+    )
 
 @app.get("/cardapio")
 def pagina_menu_deslogado(request: Request):
     return templates.TemplateResponse(
         request=request,
-        name="cardapio/lanches.html"
+        name="cardapio/lanches.html",
+        context=""
     )
 
 
@@ -86,6 +99,8 @@ def pagina_login(request: Request):
     request=request, 
     name="login/Menu.html"
 )
+
+@app.get("/login")
 
 @app.post("/login", response_class=HTMLResponse)    #response serve para o html que esta no retorno tomar conta do endereço, nao esqueça, sem isso a pagina muda mas ainda fica no /login
 def verify_login(

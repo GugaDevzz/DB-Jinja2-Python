@@ -9,6 +9,7 @@
   --color-catatau-orange: #ff8732; 
   --color-vermelhao: #c40700;
 }
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -20,38 +21,49 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;;
+  width: 100%;
   height: 90px;
   background-color: var(--color-catatau-cream);
+  padding: 0 40px; /* Dá o espaçamento nas laterais */
+  position: relative; /* Garante o contexto do alinhamento */
+}
+
+.logonav {
+  position: absolute;
+  left: 30%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .logonav img {
-  position: absolute;
-  left: 200px;
-  width: 120px;
+  width: 110px;
+  height: auto;
   cursor: pointer;
   border-radius: 10%;
-  border: solid 1px;
+  border: solid 1px var(--color-catatau-brown);
   z-index: 15;
+  /* Transborda levemente o header mantendo um visual elegante */
+  margin-top: 25px; 
 }
 
 .voltar-menu {
+  text-decoration: none;
   position: absolute;
-  font-size: 25px;
-  color: var(--color-catatau-orange);
+  top: 45px;
+  left: 20px;
+  font-size: 20px;
+  color: var(--color-catatau-brown);
   display: flex;
-  justify-content: center;
-  text-align: center;
   align-items: center;
   font-weight: 700;
-  text-decoration: none;
-  padding-top: 4px;
-  margin-top: 150px;
-  margin-left: 390px;
-  z-index: 50;
+  z-index: 10;
 }
 
-
+.voltar:hover{
+    text-decoration: underline; /*volta o sublinhado quando mouse passa*/
+}
 
 /* Seção Sobre Nós */
 .sobre-nos-section {
@@ -228,61 +240,71 @@
 /* Responsividade para Celulares */
 @media (max-width: 768px) {
 
-    /* NAV */
-    .logonav img {
-    margin: 100px;
-    position: relative;
-    top: 40px;
-    width: 90px;
-    }
+  /* NAV MOBILE */
+  .navbar {
+    height: 80px;
+    padding: 0 15px;
+  }
 
-    /* 2. Corrige o botão voltar para ele não bater no formulário */
-    .voltar-menu {
-        margin-left: 0;    /* Zera a margem fixa que jogava ele pra direita */
-        left: 5%;          /* Alinha ele na esquerda junto com o logo */
-        margin-top: 180px; /* Ajusta a altura dele para ficar abaixo do logo */
-        font-size: 20px;   /* Diminui um pouco a fonte */
-    }
+.logonav {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-    /* MAIN */
+  /* Logo no centro absoluto do mobile */
+  .logonav img {
+    width: 85px;
+    margin-top: 20px;
+  }
 
-    .sobre-container {
-        flex-direction: column-reverse; /* Imagem fica embaixo do texto no celular */
-        gap: 30px;
-    }
-    
-    .sobre-content {
-        text-align: center;
-    }
-    
-    .linha-destaque {
-        margin: 0 auto 20px auto; /* Centraliza a linha amarela */
-    }
-    
-    .sobre-diferenciais {
-        flex-wrap: wrap;
-    }
+  /* Voltar fixo no canto esquerdo da barra */
+  .voltar-menu {
+    font-size: 16px;
+    margin: 0;
+    position: static; /* Remove a margem maluca de 180px */
+  }
 
+  /* MAIN MOBILE */
+  .sobre-container {
+    flex-direction: column-reverse;
+    gap: 30px;
+  }
+  
+  .sobre-content {
+    text-align: center;
+  }
+  
+  .linha-destaque {
+    margin: 0 auto 20px auto;
+  }
+  
+  .sobre-diferenciais {
+    flex-wrap: wrap;
+  }
 
-    /* FOOTER */
-   .footer-container {
-        flex-direction: column;
-        text-align: center;
-        gap: 15px; /* Diminui o espaço geral entre as colunas */
-    }
+  /* FOOTER MOBILE */
+  .footer-container {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
 
-    .footer-col {
-        flex: none; /* Impede que a coluna tente esticar para preencher espaço vertical */
-        width: 100%;
-        margin-bottom: 10px; /* Controla o espaço entre uma seção e outra */
-    }
+  .footer-col {
+    flex: none;
+    width: 100%;
+    margin-bottom: 10px;
+  }
 
-    .footer-col h3 {
-        display: block;
-        margin: 0 auto 10px auto; /* Reduz o espaço abaixo do título */
-    }
-    
-    .main-footer {
-        padding: 20px 20px 10px 20px; /* Reduz o espaçamento interno do footer no topo */
-    }
+  .footer-col h3 {
+    display: block;
+    margin: 0 auto 10px auto;
+  }
+  
+  .main-footer {
+    padding: 20px 20px 10px 20px;
+  }
 }

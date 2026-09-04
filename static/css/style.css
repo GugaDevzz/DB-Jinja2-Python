@@ -33,7 +33,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: 52%;
+  margin-left: 50%;
   margin-right: 50%;
   max-width: 1600px;
   height: 120px;
@@ -131,8 +131,6 @@ body {
   color: #d9534f;
 }
 
-
-
 .logonav img {
   position: absolute;
   top: 10%;
@@ -185,14 +183,6 @@ body {
   display: block;
 }
 
-.menu-hamburguer i{
-      display: none;
-      font-size: 40px;
-      border: solid 2px;
-      border-radius: 15%;
-      position: relative;
-      margin-left: -240px ;
-    }
 
 /* Configuração Principal do Footer */
 .main-footer {
@@ -271,95 +261,111 @@ body {
     color: gray;
 }
 
+.nav-links .only-mobile {
+    display: none !important;
+}
+
+.nav-links .material-symbols-outlined {
+    display: none;
+}
 
 @media (max-width: 768px) {
+
+.nav-links .only-mobile {
+    display: block !important;
+}
+
+.nav-links .material-symbols-outlined {
+    display: block;
+}
+
+.nav-links {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 65px; /* Aumentado para dar espaço suficiente aos ícones + texto */
+  background-color: var(--color-catatau-cream); 
+  display: flex;
+  justify-content: space-around; 
+  align-items: center;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1); 
+  z-index: 9990;
+  padding: 5px 50px;
+}
+
+.nav-links a {
+    font-size: 11px; /* Tamanho reduzido do texto para estética de app */
+    display: flex;
+    flex-direction: column; /* Coloca o ícone acima do texto */
+    align-items: center;
+    gap: 3px; /* Espaçamento entre o ícone e o texto */
+    font-weight: 700;
+    color: var(--color-catatau-brown);
+    text-decoration: none;
+}
+
+    /* Estilo e tamanho dos ícones na barra inferior */
+.nav-links a .material-symbols-outlined {
+    font-size: 26px;
+}
     
-    .nav-links {
-      position: fixed;
-      bottom: 0;
-      left: 0px;
-      text-align: center;
-      width: 100%;
-      padding: 10px;
-      height: 50px;
-      background-color: #f5ebdc;; 
-      display: flex;
-      justify-content: space-around; 
-      align-items: center;
-      box-shadow: 0 -2px 10px rgba(0,0,0,0.1); 
-      z-index: 9990;
-    }
+  .user-area {
+    display: none;
+    position: absolute;
+    right: 15%;
+    font-size: 11px;
+  }
+  
+  .logonav img {
+    position: static;      
+    margin: 30px;
+    margin-bottom: -25px;
+    width: 110px; 
+  }
 
-    .nav-links a {
-      font-size: 90%; 
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      font-weight: 700;
-      color: var(--color-bk-brown);
-      text-decoration: none;
-    }
-
-    .navbar {
-      Justify-content: center; 
-    }
-    
-    .user-area {
-      display: none;
-      position: absolute;
-      right: 15%;
-      font-size: 11px;
-    }
-    
-    .logonav img {
-      position: static;      
-      margin: 30px;
-      margin-bottom: -25px;
-      width: 110px; 
-    }
-
-    header {
-        position: relative;
-        z-index: 11;
-    }
-
-    .hero {
-        position: relative;
-        z-index: 1;
-    }
-
-    body {
-      padding-bottom: 70px;
-    }
-
-    .menu-hamburguer i{
-      font-size: 40px;
-      border: solid 2px;
-      border-radius: 15%;
+  header {
       position: relative;
-      margin-left: -240px ;
-    }
+      z-index: 11;
+  }
 
-  .footer-container {
-        flex-direction: column;
-        text-align: center;
-        gap: 15px; /* Diminui o espaço geral entre as colunas */
-    }
+  .hero {
+      position: relative;
+      z-index: 1;
+  }
 
-    .footer-col {
-        flex: none; /* Impede que a coluna tente esticar para preencher espaço vertical */
-        width: 100%;
-        margin-bottom: 10px; /* Controla o espaço entre uma seção e outra */
-    }
+  body {
+    padding-bottom: 70px;
+  }
 
-    .footer-col h3 {
-        display: block;
-        margin: 0 auto 10px auto; /* Reduz o espaço abaixo do título */
-    }
-    
-    .main-footer {
-        padding: 20px 20px 10px 20px; /* Reduz o espaçamento interno do footer no topo */
-    }
+.menu-hamburguer i{
+  font-size: 40px;
+  border: solid 2px;
+  border-radius: 15%;
+  position: relative;
+  margin-left: -240px ;
+}
+
+.footer-container {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px; /* Diminui o espaço geral entre as colunas */
+}
+
+.footer-col {
+    flex: none; /* Impede que a coluna tente esticar para preencher espaço vertical */
+    width: 100%;
+    margin-bottom: 10px; /* Controla o espaço entre uma seção e outra */
+}
+
+.footer-col h3 {
+    display: block;
+    margin: 0 auto 10px auto; /* Reduz o espaço abaixo do título */
+}
+
+.main-footer {
+    padding: 20px 20px 10px 20px; /* Reduz o espaçamento interno do footer no topo */
+}
 
   }
 
