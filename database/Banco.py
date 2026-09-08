@@ -9,7 +9,7 @@ string_conexao = (
     #nao esqueça que nao pode espaços entre o "=" e o conteudo else cannot open database
     #precisa ficar junto!
     f"DRIVER={{{caminho_driver}}};"
-    r"SERVER=(localdb)\MSSQLLocalDB;"
+    r"SERVER=DESKTOP-KS4DVSL;"
     r"DATABASE=CatatauDB;" #nome do banco la no sqlserver
     r"Trusted_Connection=yes;"
     r"TrustServerCertificate=yes;"

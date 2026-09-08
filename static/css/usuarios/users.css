@@ -50,7 +50,8 @@
   align-items: center;
   font-weight: 700;
   text-decoration: none;
-  margin: 12%;
+  margin-top: 12%;
+  margin-left: 5%;
   z-index: 50;
 }
 
@@ -69,11 +70,11 @@
 
 .user-card {
   background: #ffffff;
-  width: 100%;
-  max-width: 520px;
+  width: 90%;                     /* Ocupa no máximo 90% da largura disponível */
+  max-width: 650px;               /* Define a largura máxima quando em telas grandes */
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transform: scale(1.3);
+  /* transform: scale(1.3); <-- REMOVIDO para evitar estouro no zoom */
   overflow: hidden;
   border: 1px solid #e1e8ed;
 }
@@ -202,92 +203,83 @@
   color: gray;
 }
 
+@media (max-width: 1200px) {
+  /* Centraliza a Logo dentro da Navbar */
+  .logonav img {
+    position: absolute;
+    top: 50px;             /* Ajusta a altura da logo */
+    left: 50%;             /* Move para o centro horizontal */
+    transform: translateX(-50%); /* Garante o alinhamento central perfeito */
+    width: 90px;           /* Diminui levemente a logo para telas menores */
+  }
+
+  /* Posiciona o "ir para o menu" no canto superior esquerdo */
+  .voltar-menu {
+    position: absolute;
+    margin: 10%;
+    font-size: 16px;       /* Ajusta o tamanho da fonte para não ocupar espaço demais */
+  }
+
+  .voltar-menu i {
+    font-size: 18px;       /* Diminui a seta do ícone */
+  }
+
+  /* Garante um espaço adequado entre o topo e o card de informações */
+  .container-card {
+    padding-top: 80px;
+  }
+}
+
 @media (max-width: 768px) {
+  /* Centraliza a Logo dentro da Navbar */
+  .logonav img {
+    position: absolute;
+    top: 70px;             /* Ajusta a altura da logo */
+    left: 50%;             /* Move para o centro horizontal */
+    transform: translateX(-50%); /* Garante o alinhamento central perfeito */
+    width: 90px;           /* Diminui levemente a logo para telas menores */
+  }
 
-.nav-links {
-  position: fixed;
-  bottom: 0;
-  left: 0px;
-  text-align: center;
-  width: 100%;
-  padding: 10px;
-  height: 50px;
-  background-color: #f5ebdc;; 
-  display: flex;
-  justify-content: space-around; 
-  align-items: center;
-  box-shadow: 0 -2px 10px rgba(0,0,0,0.1); 
-  z-index: 9990;
+  /* Posiciona o "ir para o menu" no canto superior esquerdo */
+  .voltar-menu {
+    position: absolute;
+    margin: 2% ;
+    font-size: 16px;       /* Ajusta o tamanho da fonte para não ocupar espaço demais */
+  }
+
+  .voltar-menu i {
+    font-size: 18px;       /* Diminui a seta do ícone */
+  }
+
+  /* Garante um espaço adequado entre o topo e o card de informações */
+  .container-card {
+    padding-top: 30px;
+  }
 }
 
-.cardapio-up{
-  display: flex;
-  position: absolute;
-  text-align: center;
-  font-size: 25px;
-  color: var(--color-catatau-brown);
-  left: 250%;
-}
+@media (max-width: 380px) {
+  /* Centraliza a Logo dentro da Navbar */
+  .logonav img {
+    position: absolute;
+    top: 70px;             /* Ajusta a altura da logo */
+    left: 50%;             /* Move para o centro horizontal */
+    transform: translateX(-50%); /* Garante o alinhamento central perfeito */
+    width: 90px;           /* Diminui levemente a logo para telas menores */
+  }
 
-.cardapio-apaga{
-  display: none;
-}
+  /* Posiciona o "ir para o menu" no canto superior esquerdo */
+  .voltar-menu {
+    position: absolute;
+    top: 32%;
+    font-size: 16px;       /* Ajusta o tamanho da fonte para não ocupar espaço demais */
+  }
 
-.nav-links a {
-  font-size: 90%; 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-weight: 700;
-  color: var(--color-bk-brown);
-  text-decoration: none;
-}
+  .voltar-menu i {
+    font-size: 18px;       /* Diminui a seta do ícone */
+  }
 
-.navbar {
-  Justify-content: center; 
-}
-
-.hero {
-    position: relative;
-    z-index: 1;
-}
-
-body {
-  padding-bottom: 70px;
-}
-
-.voltar-menu {
-  position: absolute;
-  font-size: 25px;
-  color: var(--color-catatau-brown);
-  display: flex;
-  left: 5%;
-  font-weight: 700;
-  text-decoration: none;
-  padding-top: 4px;
-  margin-left: 0px;
-  z-index: 50;
-}
-
-  /* FOOTER */
-.footer-container {
-  flex-direction: column;
-  text-align: center;
-  gap: 15px; /* Diminui o espaço geral entre as colunas */
-}
-
-.footer-col {
-  flex: none; /* Impede que a coluna tente esticar para preencher espaço vertical */
-  width: 100%;
-  margin-bottom: 10px; /* Controla o espaço entre uma seção e outra */
-}
-
-.footer-col h3 {
-  display: block;
-  margin: 0 auto 10px auto; /* Reduz o espaço abaixo do título */
-}
-
-.main-footer {
-  padding: 20px 20px 10px 20px; /* Reduz o espaçamento interno do footer no topo */
-}
+  /* Garante um espaço adequado entre o topo e o card de informações */
+  .container-card {
+    padding-top: 30px;
+  }
 }

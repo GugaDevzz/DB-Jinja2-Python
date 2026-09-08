@@ -48,11 +48,40 @@
                         Contato
                     </a>
                 </li>
-                <li class="only-mobile">
-                    <a href="#">
+                <li class="only-mobile menu-container-mobile">
+                    <!-- Checkbox invisível para controlar o estado (aberto/fechado) -->
+                    <input type="checkbox" id="toggle-mobile-menu" class="mobile-menu-checkbox">
+
+                    <!-- Label estilizado com o mesmo ícone e texto da barra inferior -->
+                    <label for="toggle-mobile-menu" class="mobile-menu-button">
                         <span class="material-symbols-outlined">menu</span>
-                        Menu
-                    </a>
+                        MENU
+                    </label>
+
+                    <!-- Aba/gaveta do menu no mobile -->
+                   <!-- Aba/gaveta do menu no mobile -->
+                    <div class="aba_mobile_menu">
+                        <div class="mobile-menu-header">
+                            <img src="/static/imagens/catatauimg.png" alt="Logo Catatau" class="mobile-menu-logo">
+                        </div>
+                        <ul>
+                            <li><a href="/catatau"><span class="material-symbols-outlined">home</span> Início</a></li>
+                            <li><a href="/cardapio"><span class="material-symbols-outlined">lunch_dining</span> Cardápio</a></li>
+                            <li><a href="#"><span class="material-symbols-outlined">sell</span> Cupons</a></li>
+                            <li><a href="/contato"><span class="material-symbols-outlined">storefront</span> Contato</a></li>
+
+                            {% if page_user %}
+                                <!-- Exibido apenas se o usuário ESTIVER logado -->
+                                <li><a href="/usuario/{{ page_user.nome }}"><span class="material-symbols-outlined">person</span> Perfil</a></li>
+                                <li><a href="/configuracoes"><span class="material-symbols-outlined">settings</span> Configurações</a></li>
+                                <li><a href="/logout" class="logout"><span class="material-symbols-outlined">logout</span> Sair</a></li>
+                            {% else %}
+                                <!-- Exibido quando o usuário NÃO ESTIVER logado -->
+                                <li><a href="/login"><span class="material-symbols-outlined">login</span> Entrar</a></li>
+                                <li><a href="/cadastro"><span class="material-symbols-outlined">person_add</span> Cadastrar-se</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
                 </li>
             </ul>
            
@@ -74,7 +103,7 @@
                     <li><a href="/usuario/{{page_user.nome}}">Perfil</a></li>
                     <li><a href="/configuracoes">Configurações</a></li>
                     <li><hr></li>
-                    <li><a href="/catatau" class="logout">Sair</a></li>
+                    <li><a href="/logout" class="logout">Sair</a></li>
                 </ul>
                 {% else %}
                     <a href="/cadastro" class="btn-cadastro">Cadastre-se</a>

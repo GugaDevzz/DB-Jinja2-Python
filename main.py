@@ -8,6 +8,8 @@ from fastapi.responses import RedirectResponse, HTMLResponse
 from starlette import status
 from fastapi import FastAPI, Depends, Form, Request
 from starlette import status
+from typing import Annotated
+from fastapi import FastAPI, Depends, Form, Request, Cookie  # <--- Adicionado Cookie
 
 app = FastAPI()
 
@@ -42,29 +44,27 @@ def pagina_menu_deslogado(request: Request):
     )
 
 
-@app.get("/catatau/{nome}")
-def pagina_menu(request: Request, nome: str, db: Session = Depends(get_db)):
-    # Busca o usuário no banco
-    usuario_banco = db.query(CadastroTable).filter(CadastroTable.nome == nome).first()
+@app.get("/catatau")
+def pagina_menu(
+    request: Request,
+    user_id: Annotated[str | None, Cookie()] = None,  # Captura o cookie salvo no navegador
+    db: Session = Depends(get_db)
+):
+    usuario_banco = None
     
+    # Se o cookie existir (significa que o usuário fez login há menos de 1 hora)
+    if user_id:
+        usuario_banco = db.query(CadastroTable).filter(CadastroTable.id == int(user_id)).first()
+
     return templates.TemplateResponse(
         request=request,
         name="index.html",
         context={
-            "page_user": usuario_banco  # <--- Aqui está a variável que o HTML espera
+            "page_user": usuario_banco  # Passa o usuário se logado, ou None se deslogado
         }
     )
 
-@app.get("/catatau")
-def pagina_menu_deslogado(request: Request):
-    return templates.TemplateResponse(
-        request=request,
-        name="index.html",
-        context={"page_user": None}
-    )
-
 #responseclass vai entender qual o endreço que ja ta sendo 
-#adiantado para ser entendido, que no caso ta sendo passado pelo return do /cadastro
 @app.get("/usuario/{nome}", response_class=HTMLResponse) 
 def pagina_profile(
     request: Request,
@@ -100,16 +100,14 @@ def pagina_login(request: Request):
     name="login/Menu.html"
 )
 
-@app.get("/login")
-
-@app.post("/login", response_class=HTMLResponse)    #response serve para o html que esta no retorno tomar conta do endereço, nao esqueça, sem isso a pagina muda mas ainda fica no /login
+@app.post("/login", response_class=HTMLResponse)
 def verify_login(
     request: Request,
     login_input: str = Form(...),
     senha: str = Form(...),
     db: Session = Depends(get_db)
 ):
-    # Busca por Nome ou Email + Senha
+    # Sua consulta no banco de dados continua igual
     usuario_db = db.query(CadastroTable).filter(
         or_(
             CadastroTable.nome == login_input,
@@ -119,23 +117,40 @@ def verify_login(
     ).first()
 
     if usuario_db:
-        # Passa o OBJETO COMPLETO 'usuario_db' para o Jinja poder ler {{ page_user.nome }}
-        return templates.TemplateResponse(
+        # 1. Armazena a resposta em uma variável
+        response = templates.TemplateResponse(
             request=request,
             name="index.html",
-            context={
-                "page_user": usuario_db  # <--- Aqui está a variável que o HTML espera
-            }
+            context={"page_user": usuario_db}
         )
-    
+        
+        # 2. Injeta o cookie identificando o usuário logado
+        response.set_cookie(
+            key="user_id",               # Nome do cookie
+            value=str(usuario_db.id),     # Valor (guardamos o ID do usuário)
+            httponly=True,               # Segurança: impede JS no navegador de acessar esse cookie
+            max_age=3600,                # Expira em 1 hora (3600 segundos)
+            samesite="lax"               # Proteção contra ataques CSRF
+        )
+        
+        # 3. Retorna a resposta com o cookie gravado
+        return response
+
+    # Se a senha estiver incorreta
     return templates.TemplateResponse(
-        request=request, 
+        request=request,
         name="login/Menu.html",
         context={"erro": "Usuário ou senha incorretos!"}
     )
 
-    
+@app.get("/logout")
+def logout():
+    response = RedirectResponse(url="/catatau", status_code=status.HTTP_303_SEE_OTHER)
+    response.delete_cookie(key="user_id")  # Apaga o cookie do navegador
+    return response
 #just to open the register page
+
+
 @app.get("/cadastro")
 def pagina_cadastro(request: Request):
     return templates.TemplateResponse(

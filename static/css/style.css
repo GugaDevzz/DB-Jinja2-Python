@@ -5,10 +5,6 @@
   --color-vermelhao: #c40700;
 }
 
-/* sempre que for mudar de posição alguma tag lembre que, 
-para que fique no lugar principal que é no canto superior esquerdo
-e quer usar left right bottom and top, use relative absolute e ele ignora
-tudo que o pai da tag diz e voce recomeça */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -22,7 +18,7 @@ body {
 
 .top-banner {
   background-color: var(--color-catatau-orange);
-  color: var(--color-bk-brown);
+  color: var(--color-catatau-brown);
   text-align: center;
   padding: 10px;
   font-size: 13px;
@@ -33,8 +29,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: 50%;
-  margin-right: 50%;
+  margin-left: auto;
+  margin-right: auto;
   max-width: 1600px;
   height: 120px;
 }
@@ -47,34 +43,20 @@ body {
   cursor: pointer;
   align-items: center;
   justify-content: center;
-  /* Estiliza o label para parecer um botão clicável */
-  cursor: pointer;
   display: inline-block;
-
 }
 
 .material-icons {
-    font-size: 40px !important; /* Altere este valor para o tamanho desejado */
+  font-size: 40px !important;
 }
 
-/* Estado Padrão: Escondido */
-.aba_profile {
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  border: 1px solid #e0e0e0;
-  margin-top: 8px;
-  z-index: 999;
-}
-
-/* Esconde o checkbox real da tela */
 .menu-checkbox {
   display: none;
 }
 
-/* Estado inicial do Menu: Invisível */
+/* Menu de perfil no Desktop */
 .aba_profile {
-  display: none; /* Essa linha é quem faz de fato a aba do usuario fechar */
+  display: none;
   position: absolute;
   top: 100%;
   right: 0;
@@ -87,13 +69,11 @@ body {
   z-index: 999;
 }
 
-/* MÁGICA DO CSS: Quando o checkbox for marcado (:checked), mostra a aba com keyframes */
 .menu-checkbox:checked ~ .aba_profile {
   display: block;
   animation: animation-profile 0.25s ease-out forwards;
 }
 
-/* Keyframe de abertura */
 @keyframes animation-profile {
   from {
     opacity: 0;
@@ -105,7 +85,6 @@ body {
   }
 }
 
-/* Estilização interna simples */
 .aba_profile ul {
   list-style: none;
   margin: 0;
@@ -148,7 +127,7 @@ body {
   gap: 50px;
 }
 
-.nav-links a{
+.nav-links a {
   font-size: 18px;
   text-decoration: none;
   color: var(--color-catatau-brown);
@@ -160,14 +139,14 @@ body {
   color: var(--color-vermelhao);
 }
 
-.user-area{
+.user-area {
   position: absolute;
   right: 5%;
   font-size: 14px;
   color: var(--color-catatau-brown);
 }
 
-.user-area a{
+.user-area a {
   text-decoration: underline;
   color: var(--color-catatau-brown);
   font-weight: bold;
@@ -183,192 +162,316 @@ body {
   display: block;
 }
 
-
-/* Configuração Principal do Footer */
+/* Footer Principal */
 .main-footer {
-    background-color: #502314; /* Marrom escuro para contrastar com o vermelho do site */
-    color: white;
-    padding: 40px 20px 10px 20px;
-    font-family: Arial, sans-serif;
+  background-color: #502314;
+  color: white;
+  padding: 40px 20px 10px 20px;
+  font-family: Arial, sans-serif;
 }
 
 .footer-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 300px;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 40px;
 }
 
 .footer-col {
-    flex: 1;
+  flex: 1;
+  min-width: 200px;
 }
 
 .footer-logo {
-    font-size: 24px;
-    color: #ffc107; /* Amarelo para destacar o nome */
-    margin-bottom: 15px;
-    text-transform: uppercase;
+  font-size: 24px;
+  color: #ffc107;
+  margin-bottom: 15px;
+  text-transform: uppercase;
 }
 
 .footer-logo span {
-    color: #bc0a00; /* Vermelho Catatau */
+  color: #bc0a00;
 }
 
 .footer-col h3 {
-    color: #ffc107;
-    margin-bottom: 20px;
-    font-size: 18px;
-    border-bottom: 2px solid #bc0a00;
-    display: inline-block;
-    padding-bottom: 5px;
+  color: #ffc107;
+  margin-bottom: 20px;
+  font-size: 18px;
+  border-bottom: 2px solid #bc0a00;
+  display: inline-block;
+  padding-bottom: 5px;
 }
 
 .footer-col ul {
-    list-style: none;
-    /* padding: 0; */
+  list-style: none;
 }
 
 .footer-col ul li {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .footer-col ul li a {
-    color: #fcf8f3;
-    text-decoration: none;
-    transition: 0.3s;
+  color: #fcf8f3;
+  text-decoration: none;
+  transition: 0.3s;
 }
 
 .footer-col ul li a:hover {
-    color: #ffc107;
-    padding-left: 5px;
+  color: #ffc107;
+  padding-left: 5px;
 }
 
 .footer-col p {
-    font-size: 14px;
-    line-height: 1.6;
-    color: #fcf8f3;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #fcf8f3;
 }
 
-/* Barra de Direitos Autorais */
 .footer-bottom {
-    text-align: center;
-    margin-top: 40px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    font-size: 12px;
-    color: gray;
+  text-align: center;
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 12px;
+  color: gray;
 }
 
 .nav-links .only-mobile {
-    display: none !important;
+  display: none !important;
 }
 
 .nav-links .material-symbols-outlined {
-    display: none;
+  display: none;
 }
 
+/* ==========================================
+   MEDIA QUERY 1: DISPOSITIVOS MOBILE (<= 768px)
+   ========================================== */
 @media (max-width: 768px) {
 
-.nav-links .only-mobile {
+  .nav-links .only-mobile {
     display: block !important;
-}
+  }
 
-.nav-links .material-symbols-outlined {
+  .nav-links .material-symbols-outlined {
     display: block;
-}
+  }
 
-.nav-links {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 65px; /* Aumentado para dar espaço suficiente aos ícones + texto */
-  background-color: var(--color-catatau-cream); 
-  display: flex;
-  justify-content: space-around; 
-  align-items: center;
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1); 
-  z-index: 9990;
-  padding: 5px 50px;
-}
-
-.nav-links a {
-    font-size: 11px; /* Tamanho reduzido do texto para estética de app */
+  /* Barra de Navegação Inferior Estilo App */
+  .nav-links {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 65px;
+    background-color: var(--color-catatau-cream); 
     display: flex;
-    flex-direction: column; /* Coloca o ícone acima do texto */
+    justify-content: space-around; 
     align-items: center;
-    gap: 3px; /* Espaçamento entre o ícone e o texto */
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.15); 
+    z-index: 9990;
+    padding: 5px 10px;
+    gap: 0;
+  }
+
+  .nav-links > li > a {
+    font-size: 11px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
     font-weight: 700;
     color: var(--color-catatau-brown);
     text-decoration: none;
-}
+  }
 
-    /* Estilo e tamanho dos ícones na barra inferior */
-.nav-links a .material-symbols-outlined {
-    font-size: 26px;
-}
-    
+  .nav-links a .material-symbols-outlined {
+    font-size: 24px;
+  }
+      
   .user-area {
     display: none;
-    position: absolute;
-    right: 15%;
-    font-size: 11px;
   }
   
   .logonav img {
     position: static;      
-    margin: 30px;
-    margin-bottom: -25px;
+    margin: 20px auto -15px auto;
     width: 110px; 
+    display: block;
   }
 
   header {
-      position: relative;
-      z-index: 11;
+    position: relative;
+    z-index: 11;
   }
 
   .hero {
-      position: relative;
-      z-index: 1;
+    position: relative;
+    z-index: 1;
   }
 
   body {
-    padding-bottom: 70px;
+    padding-bottom: 75px; /* Evita que o footer fique coberto pela barra fixa */
   }
 
-.menu-hamburguer i{
-  font-size: 40px;
-  border: solid 2px;
-  border-radius: 15%;
-  position: relative;
-  margin-left: -240px ;
-}
-
-.footer-container {
+  /* Footer responsivo */
+  .footer-container {
     flex-direction: column;
     text-align: center;
-    gap: 15px; /* Diminui o espaço geral entre as colunas */
-}
-
-.footer-col {
-    flex: none; /* Impede que a coluna tente esticar para preencher espaço vertical */
-    width: 100%;
-    margin-bottom: 10px; /* Controla o espaço entre uma seção e outra */
-}
-
-.footer-col h3 {
-    display: block;
-    margin: 0 auto 10px auto; /* Reduz o espaço abaixo do título */
-}
-
-.main-footer {
-    padding: 20px 20px 10px 20px; /* Reduz o espaçamento interno do footer no topo */
-}
-
+    gap: 20px;
   }
 
+  .footer-col {
+    width: 100%;
+    margin-bottom: 10px;
+  }
 
+  .footer-col h3 {
+    display: block;
+    margin: 0 auto 10px auto;
+  }
 
+  .main-footer {
+    padding: 20px 20px 10px 20px;
+  }
 
+  /* --- MENU MOBILE SUSPENSO (Hambúrguer) --- */
+
+  .mobile-menu-checkbox {
+    display: none !important;
+  }
+
+  .mobile-menu-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--color-catatau-brown);
+    cursor: pointer;
+  }
+
+  .menu-container-mobile {
+    position: relative;
+  }
+
+  /* Janela Suspensa do Menu */
+  .aba_mobile_menu {
+    display: none;
+    position: fixed;
+    bottom: 75px;
+    right: 10px;
+    width: 220px;
+    max-width: 85vw;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    border: 1px solid #e0e0e0;
+    z-index: 9999;
+    padding: 10px;
+  }
+
+  .mobile-menu-checkbox:checked ~ .aba_mobile_menu {
+    display: block;
+    animation: animation-mobile-menu 0.25s ease-out forwards;
+  }
+
+  @keyframes animation-mobile-menu {
+    from {
+      opacity: 0;
+      transform: translateY(15px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .mobile-menu-header {
+    text-align: center;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 6px;
+  }
+
+  .mobile-menu-logo {
+    width: 45px;
+    height: auto;
+    border-radius: 6px;
+  }
+
+  .aba_mobile_menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .aba_mobile_menu li {
+    width: 100%;
+  }
+
+  /* Força a exibição horizontal para ícones + textos dentro do menu suspenso */
+  .aba_mobile_menu li a {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 12px !important;
+    padding: 10px 12px !important;
+    color: var(--color-catatau-brown) !important;
+    text-decoration: none !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    text-transform: none !important;
+    width: 100%;
+  }
+
+  .aba_mobile_menu li a .material-symbols-outlined {
+    font-size: 20px !important;
+    display: inline-block !important;
+  }
+
+  .aba_mobile_menu li hr {
+    border: 0;
+    border-top: 1px solid #e0e0e0;
+    margin: 4px 0;
+  }
+
+  .aba_mobile_menu li a.logout {
+    color: #d9534f !important;
+  }
+}
+
+/* ==========================================
+   MEDIA QUERY 2: DISPOSITIVOS PEQUENOS (<= 480px / ex: 375px)
+   ========================================== */
+@media (max-width: 480px) {
+
+  .nav-links {
+    padding: 4px 5px;
+  }
+
+  .nav-links > li > a {
+    font-size: 10px;
+  }
+
+  .nav-links a .material-symbols-outlined {
+    font-size: 22px;
+  }
+
+  .aba_mobile_menu {
+    right: 5px;
+    width: 200px;
+    bottom: 70px;
+  }
+
+  .logonav img {
+    width: 95px;
+    margin-top: 15px;
+  }
+}
