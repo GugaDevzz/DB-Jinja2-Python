@@ -74,9 +74,9 @@
                                 <li><a href="#"><span class="material-symbols-outlined">sell</span> Cupons</a></li>
                                 <li><a href="/contato"><span class="material-symbols-outlined">storefront</span> Contato</a></li>
                                 <li><hr></li>
-                                <li><a href="#"><span class="material-symbols-outlined">person</span> Perfil</a></li>
+                                <li><a href="/usuario"><span class="material-symbols-outlined">person</span> Perfil</a></li>
                                 <li><a href="#"><span class="material-symbols-outlined">settings</span> Configurações</a></li>
-                                <li><a href="#" class="logout"><span class="material-symbols-outlined">logout</span> Sair</a></li>
+                                <li><a href="/logout" class="logout"><span class="material-symbols-outlined">logout</span> Sair</a></li>
                             </ul>
                         </div>
                     </li>
@@ -84,38 +84,65 @@
                 
                 <div class="user-area">
                     <div class="user-menu-container">
-                        
-                        <!-- 1. Checkbox invisível para controlar o estado (aberto/fechado) -->
-                        <input type="checkbox" id="toggle-profile-menu" class="menu-checkbox">
-            
-                        <!-- 2. Label que engloba o ícone; ao clicar nele, o checkbox é marcado/desmarcado -->
+                    
+                        <input type="checkbox" id="toggle-profile-menu" class="menu-checkbox" {% if carrinho %}checked{% endif %}>
+
                         <label for="toggle-profile-menu" class="button-profile">
-                        <i class="material-icons">shopping_cart</i>
+                            <i class="material-icons">shopping_cart</i>
                         </label>
-            
-                        <!-- 3. A aba do menu (deve vir logo DEPOIS do input no HTML) -->
+
                         <div class="aba_carrinho">
                             <div class="carrinho-header">
                                 <h3>Seu Pedido</h3>
-                                <label for="toggle-cart-menu" class="btn-fechar">&times;</label>
+                                <label for="toggle-profile-menu" class="btn-fechar">&times;</label>
                             </div>
 
                             <div class="carrinho-body">
-                                <!-- Exemplo de item no carrinho -->
-                                <div class="item-carrinho">
-                                    <img src="/static/imagens/lanches/Primeiro-lanche.png" alt="Whopper Grogu">
-                                    <div class="item-info">
-                                        <h4>Whopper® Grogu</h4>
-                                        <span class="preco">R$ 35,00</span>
+                                {% if carrinho %}
+                                    {% for item in carrinho %}
+                                    <div class="item-carrinho">
+                                        <img src="{{ item.imagem }}" alt="{{ item.nome }}">
+                                        
+                                        <div class="item-info">
+                                            <h4>{{ item.nome }}</h4>
+                                            <span class="preco">R$ {{ "%.2f"|format(item.preco) }}</span>
+                                        </div>
+
+                                        <!-- Seletor de quantidade via FORM -->
+                                        <div class="qtd">
+                                            <form action="/carrinho/atualizar" method="POST">
+                                                <input type="hidden" name="item_id" value="{{ item.id }}">
+                                                <input type="hidden" name="acao" value="diminuir">
+                                                <button type="submit" class="btn-qtd">-</button>
+                                            </form>
+
+                                            <span class="qtd-numero">{{ item.quantidade }}</span>
+
+                                            <form action="/carrinho/atualizar" method="POST">
+                                                <input type="hidden" name="item_id" value="{{ item.id }}">
+                                                <input type="hidden" name="acao" value="aumentar">
+                                                <button type="submit" class="btn-qtd">+</button>
+                                            </form>
+                                        </div>
+
+                                        <!-- Botão de remover via FORM -->
+                                        <form action="/carrinho/remover" method="POST">
+                                            <input type="hidden" name="item_id" value="{{ item.id }}">
+                                            <button type="submit" class="btn-remover" title="Remover item">
+                                                <span class="material-symbols-outlined">delete</span>
+                                            </button>
+                                        </form>
                                     </div>
-                                    <span class="qtd">x1</span>
-                                </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <p style="text-align: center; color: #888; margin: 20px 0;">Seu carrinho está vazio.</p>
+                                {% endif %}
                             </div>
 
                             <div class="carrinho-footer">
                                 <div class="total-area">
                                     <span>Total:</span>
-                                    <strong>R$ 35,00</strong>
+                                    <strong>R$ {{ "%.2f"|format(total_carrinho) }}</strong>
                                 </div>
                                 <a href="/checkout" class="btn-finalizar">Finalizar Pedido</a>
                             </div>
@@ -124,32 +151,15 @@
                 </div>
             </nav>
         </header>
-        
-            <!-- <a 
-                href="/catatau" class="voltar-menu">
-                <i class="material-icons">arrow_back_ios</i>
-                <span class="voltar">Voltar</span>
-            </a>
 
-            <nav class="navbar">
-                <a href="/cardapio" class="cardapio-up">CARDÁPIO</a>
-
-                    <ul class="nav-links">
-                        <li><a href="/catatau">Início</a></li>
-                        <li><a href="/cardapio">Cardápio</a></li>
-                        <li><a href="#">Cupons</a></li>
-                        <li><a href="/contato">Contato</a></li>
-                    </ul>
-            </nav> -->
-
-            <main class="hero">
-                <section class="bannerlanche">
-                    <picture>
-                        <source class="media" srcset="/static/imagens/cardapio-media.png" media="(max-width: 768px)">
-                        <img src="/static/imagens/banner-cardapio.png" alt="Banner Catatau Lanches">
-                    </picture>
-                </section>
-            </main>
+        <main class="hero">
+            <section class="bannerlanche">
+                <picture>
+                    <source class="media" srcset="/static/imagens/cardapio-media.png" media="(max-width: 768px)">
+                    <img src="/static/imagens/banner-cardapio.png" alt="Banner Catatau Lanches">
+                </picture>
+            </section>
+        </main>
 
         <div class="menu-container">
             <fieldset>
@@ -161,7 +171,7 @@
                         <div class="card-item">
                             <span class="badge-novo">Novo</span>
                             <div class="img-container">
-                                <img src="/static/imagens/lanches/Primeiro-lanche.png" alt="Whopper Grogu">
+                                <img src="/static/imagens/lanches/Whopper Grogu.png" alt="Whopper Grogu">
                             </div>
                             <h3>Whopper® Grogu</h3>
                         </div>
@@ -197,7 +207,7 @@
 
                     <div class="card-item">
                         <div class="img-container">
-                            <img src="/static/imagens/lanches/Primeiro-lanche.png" alt="King Fraldinha">
+                            <img src="/static/imagens/lanches/Whopper Grogu.png" alt="King Fraldinha">
                         </div>
                         <h3>King Fraldinha</h3>
                     </div>

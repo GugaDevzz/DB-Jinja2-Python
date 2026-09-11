@@ -1,4 +1,5 @@
-from models.Tabelas import CadastroTable
+from database.Tabelas import Cliente, Produto
+import json
 from database.Banco import get_db
 from sqlalchemy.orm import Session
 from fastapi.templating import Jinja2Templates
@@ -11,21 +12,72 @@ from starlette import status
 from typing import Annotated
 from fastapi import FastAPI, Depends, Form, Request, Cookie  # <--- Adicionado Cookie
 
+
 app = FastAPI()
 
 templates = Jinja2Templates(directory="templates")
 #define onde o jinja vai agir.
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
+
+def carregar_carrinho_do_cookie(request: Request, db: Session):
+    carrinho_cookie = request.cookies.get("carrinho_catatau")
+    itens_carrinho = []
+    total = 0.0
+
+    if carrinho_cookie:
+        carrinho_dict = json.loads(carrinho_cookie) # Formato: {"1": 2, "3": 1}
+        
+        for prod_id_str, quantidade in carrinho_dict.items():
+            produto = db.query(Produto).filter(Produto.id == int(prod_id_str)).first()
+            if produto:
+                subtotal = produto.valor * quantidade
+                total += subtotal
+                itens_carrinho.append({
+                    "id": produto.id,
+                    "nome": produto.nome,
+                    "preco": produto.valor,
+                    "quantidade": quantidade,
+                    "subtotal": subtotal,
+                    "imagem": f"/static/imagens/lanches/{produto.nome}.png"
+                })
+
+    return itens_carrinho, total
+
+
 @app.get("/")
 def home():
     return {"status": "Servidor no ar"}
 
+#just to open the login page
+@app.get("/login")
+def pagina_login(request: Request):
+    return templates.TemplateResponse(
+    request=request, 
+    name="login/Menu.html"
+)
+
+@app.get("/cadastro")
+def pagina_cadastro(request: Request):
+    return templates.TemplateResponse(
+    request=request, 
+    name="cadastro/menu.html"
+)
+
 @app.get("/lanche1")
-def pagina_lanche1(request: Request):
+def pagina_lanche1(
+    request: Request, 
+    db: Session = Depends(get_db)
+):
+    itens_carrinho, total = carregar_carrinho_do_cookie(request, db)
+    
     return templates.TemplateResponse(
         request=request,
-        name="cardapio/envlanches/Whopper®Grogu.html"
+        name="cardapio/envlanches/Whopper®Grogu.html",
+        context={
+            "carrinho": itens_carrinho,
+            "total_carrinho": total
+        }
     )
 
 @app.get("/contato")
@@ -36,13 +88,20 @@ def pagina_contato(request: Request):
     )
 
 @app.get("/cardapio")
-def pagina_menu_deslogado(request: Request):
+def pagina_menu_deslogado(
+    request: Request,
+    db: Session = Depends(get_db)):
+    
+    itens_carrinho, total = carregar_carrinho_do_cookie(request, db)
+
     return templates.TemplateResponse(
         request=request,
         name="cardapio/lanches.html",
-        context=""
+        context={
+            "carrinho": itens_carrinho,
+            "total_carrinho": total
+        }
     )
-
 
 @app.get("/catatau")
 def pagina_menu(
@@ -54,7 +113,7 @@ def pagina_menu(
     
     # Se o cookie existir (significa que o usuário fez login há menos de 1 hora)
     if user_id:
-        usuario_banco = db.query(CadastroTable).filter(CadastroTable.id == int(user_id)).first()
+        usuario_banco = db.query(Cliente).filter(Cliente.id == int(user_id)).first()
 
     return templates.TemplateResponse(
         request=request,
@@ -72,9 +131,9 @@ def pagina_profile(
     db: Session = Depends(get_db)
 ):
     
-    usuario_db = db.query(CadastroTable).filter(CadastroTable.nome == nome).first()
+    usuario_db = db.query(Cliente).filter(Cliente.nome == nome).first()
 
-    # Monta o dicionário com as informações trazidas da tabela CadastroTable
+    # Monta o dicionário com as informações trazidas da tabela Cliente
     dados_usuario = {
         "nome": usuario_db.nome,
         "email": usuario_db.email,
@@ -92,13 +151,6 @@ def pagina_profile(
     )
 
 
-#just to open the login page
-@app.get("/login")
-def pagina_login(request: Request):
-    return templates.TemplateResponse(
-    request=request, 
-    name="login/Menu.html"
-)
 
 @app.post("/login", response_class=HTMLResponse)
 def verify_login(
@@ -108,12 +160,12 @@ def verify_login(
     db: Session = Depends(get_db)
 ):
     # Sua consulta no banco de dados continua igual
-    usuario_db = db.query(CadastroTable).filter(
+    usuario_db = db.query(Cliente).filter(
         or_(
-            CadastroTable.nome == login_input,
-            CadastroTable.email == login_input
+            Cliente.nome == login_input,
+            Cliente.email == login_input
         ),
-        CadastroTable.senha == senha
+        Cliente.senha == senha
     ).first()
 
     if usuario_db:
@@ -143,21 +195,6 @@ def verify_login(
         context={"erro": "Usuário ou senha incorretos!"}
     )
 
-@app.get("/logout")
-def logout():
-    response = RedirectResponse(url="/catatau", status_code=status.HTTP_303_SEE_OTHER)
-    response.delete_cookie(key="user_id")  # Apaga o cookie do navegador
-    return response
-#just to open the register page
-
-
-@app.get("/cadastro")
-def pagina_cadastro(request: Request):
-    return templates.TemplateResponse(
-    request=request, 
-    name="cadastro/menu.html"
-)
-
 @app.post("/cadastro")
 def cadastrar_usuario(
 
@@ -181,7 +218,7 @@ def cadastrar_usuario(
         )
 
     #verifica se tem nomes emails ou cpfs iguais
-    verify = db.query(CadastroTable).filter(CadastroTable.nome == nome).first() or db.query(CadastroTable).filter(CadastroTable.cpf == CPF).first()
+    verify = db.query(Cliente).filter(Cliente.nome == nome).first() or db.query(Cliente).filter(Cliente.cpf == CPF).first()
     if verify:
         return templates.TemplateResponse(
             request=request,
@@ -193,7 +230,7 @@ def cadastrar_usuario(
     telefone_completo = f"{ddd}" + " " + f"{numero}"
 
     # Criando o objeto para salvar no banco via SQLAlchemy
-    novo_usuario = CadastroTable(
+    novo_usuario = Cliente(
         nome=nome,
         email=email,
         cpf=CPF,
@@ -219,6 +256,72 @@ def cadastrar_usuario(
         status_code=status.HTTP_303_SEE_OTHER # nao é necessário colocar esse, vai rodar sem tambem!
     )
 
+
+@app.post("/carrinho/atualizar")
+def atualizar_carrinho(
+    request: Request,
+    item_id: int = Form(...),
+    acao: str = Form(...)
+):
+    carrinho_cookie = request.cookies.get("carrinho_catatau")
+    carrinho_dict = json.loads(carrinho_cookie) if carrinho_cookie else {}
+    
+    key = str(item_id)
+    if key in carrinho_dict:
+        if acao == "aumentar":
+            carrinho_dict[key] += 1
+        elif acao == "diminuir":
+            carrinho_dict[key] -= 1
+            if carrinho_dict[key] <= 0:
+                del carrinho_dict[key]
+
+    referer = request.headers.get("referer", "/cardapio")
+    response = RedirectResponse(url=referer, status_code=status.HTTP_303_SEE_OTHER)
+    response.set_cookie(key="carrinho_catatau", value=json.dumps(carrinho_dict), httponly=True)
+    return response
+
+
+@app.post("/carrinho/remover")
+def remover_do_carrinho(
+    request: Request,
+    item_id: int = Form(...)
+):
+    carrinho_cookie = request.cookies.get("carrinho_catatau")
+    carrinho_dict = json.loads(carrinho_cookie) if carrinho_cookie else {}
+    
+    key = str(item_id)
+    if key in carrinho_dict:
+        del carrinho_dict[key]
+
+    referer = request.headers.get("referer", "/cardapio")
+    response = RedirectResponse(url=referer, status_code=status.HTTP_303_SEE_OTHER)
+    response.set_cookie(key="carrinho_catatau", value=json.dumps(carrinho_dict), httponly=True)
+    return response
+
+
+@app.post("/carrinho/adicionar")
+def adicionar_ao_carrinho(
+    request: Request,
+    item_id: int = Form(...)
+):
+    carrinho_cookie = request.cookies.get("carrinho_catatau")
+    carrinho_dict = json.loads(carrinho_cookie) if carrinho_cookie else {}
+    
+    key = str(item_id)
+    carrinho_dict[key] = carrinho_dict.get(key, 0) + 1
+
+    referer = request.headers.get("referer", "/cardapio")
+    response = RedirectResponse(url=referer, status_code=status.HTTP_303_SEE_OTHER)
+    response.set_cookie(key="carrinho_catatau", value=json.dumps(carrinho_dict), httponly=True)
+    return response
+
+
+
+@app.get("/logout")
+def logout():
+    response = RedirectResponse(url="/catatau", status_code=status.HTTP_303_SEE_OTHER)
+    response.delete_cookie(key="user_id")  # Apaga o cookie do navegador
+    return response
 
 
 
@@ -249,5 +352,5 @@ def cadastrar_usuario(
 
 @app.get("/administrator")
 def mostrar_geral(db: Session = Depends(get_db)):
-    all_users = db.query(CadastroTable).all()
+    all_users = db.query(Cliente).all()
     return all_users

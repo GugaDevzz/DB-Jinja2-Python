@@ -88,7 +88,7 @@ body {
     position: absolute;
     top: 100%;
     right: 0;
-    width: 350px; /* Largura maior que o menu de perfil */
+    width: 380px; 
     background-color: #ffffff;
     border-radius: 12px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
@@ -149,12 +149,43 @@ body {
     gap: 12px;
 }
 
-.item-carrinho {
+.item-carrinho .qtd {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 6px;
+    background-color: #f2f2f2;
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+/* Botões de + e - */
+.item-carrinho .qtd .btn-qtd {
+    background: transparent;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0 4px;
+    color: #333;
+}
+
+.item-carrinho .qtd .btn-qtd:hover {
+    color: #e41e26; /* Cor de destaque */
+}
+
+/* Texto da quantidade */
+.item-carrinho .qtd .qtd-numero {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.item-carrinho form{
+    display: flex;
+    align-items: center;
+    gap: 10px;
     background: #fdfdfd;
-    padding: 8px;
+    padding: 8px 10px;
     border-radius: 8px;
     border: 1px solid #eee;
 }
@@ -164,6 +195,10 @@ body {
     height: 50px;
     object-fit: cover;
     border-radius: 6px;
+}
+
+.item-info {
+    flex: 1;
 }
 
 .item-info h4 {
@@ -178,12 +213,57 @@ body {
 }
 
 .item-carrinho .qtd {
-    margin-left: auto;
-    font-weight: bold;
-    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
     background: var(--color-catatau-cream);
-    padding: 2px 8px;
-    border-radius: 12px;
+    padding: 3px 6px;
+    border-radius: 8px;
+}
+
+.item-carrinho .qtd .btn-qtd {
+    background: transparent;
+    border: none;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0 4px;
+    color: var(--color-catatau-brown);
+}
+
+.item-carrinho .qtd .btn-qtd:hover {
+    color: var(--color-vermelhao);
+}
+
+.item-carrinho .qtd .qtd-numero {
+    font-size: 13px;
+    font-weight: bold;
+    padding: 0 2px;
+}
+
+/* Botão de Lixeira (Remover) */
+.btn-remover {
+    background: none;
+    border: none;
+    color: #a0a0a0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border-radius: 4px;
+    transition: color 0.2s, background-color 0.2s;
+}
+
+.btn-remover .material-symbols-outlined {
+    font-size: 20px !important;
+    display: block !important;
+}
+
+.btn-remover:hover {
+    color: var(--color-vermelhao);
+    background-color: #fee2e2;
 }
 
 .carrinho-footer {

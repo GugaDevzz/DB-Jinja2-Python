@@ -18,7 +18,7 @@
     </div>
     
     <a 
-        href="/catatau" class="voltar-menu">
+        href="/cardapio" class="voltar-menu">
         <i class="material-icons">arrow_back_ios</i>
         <span class="voltar">Voltar</span>
     </a>
@@ -62,45 +62,72 @@
             </ul>
            
             <div class="user-area">
-                    <div class="user-menu-container">
-                        
-                        <!-- 1. Checkbox invisível para controlar o estado (aberto/fechado) -->
-                        <input type="checkbox" id="toggle-profile-menu" class="menu-checkbox">
-            
-                        <!-- 2. Label que engloba o ícone; ao clicar nele, o checkbox é marcado/desmarcado -->
-                        <label for="toggle-profile-menu" class="button-profile">
+                <div class="user-menu-container">
+                    
+                    <input type="checkbox" id="toggle-profile-menu" class="menu-checkbox" {% if carrinho %}checked{% endif %}>
+
+                    <label for="toggle-profile-menu" class="button-profile">
                         <i class="material-icons">shopping_cart</i>
-                        </label>
-            
-                        <!-- 3. A aba do menu (deve vir logo DEPOIS do input no HTML) -->
-                        <div class="aba_carrinho">
-                            <div class="carrinho-header">
-                                <h3>Seu Pedido</h3>
-                                <label for="toggle-cart-menu" class="btn-fechar">&times;</label>
-                            </div>
+                    </label>
 
-                            <div class="carrinho-body">
-                                <!-- Exemplo de item no carrinho -->
+                    <div class="aba_carrinho">
+                        <div class="carrinho-header">
+                            <h3>Seu Pedido</h3>
+                            <label for="toggle-profile-menu" class="btn-fechar">&times;</label>
+                        </div>
+
+                        <div class="carrinho-body">
+                            {% if carrinho %}
+                                {% for item in carrinho %}
                                 <div class="item-carrinho">
-                                    <img src="/static/imagens/lanches/Primeiro-lanche.png" alt="Whopper Grogu">
+                                    <img src="{{ item.imagem }}" alt="{{ item.nome }}">
+                                    
                                     <div class="item-info">
-                                        <h4>Whopper® Grogu</h4>
-                                        <span class="preco">R$ 35,00</span>
+                                        <h4>{{ item.nome }}</h4>
+                                        <span class="preco">R$ {{ "%.2f"|format(item.preco) }}</span>
                                     </div>
-                                    <span class="qtd">x1</span>
-                                </div>
-                            </div>
 
-                            <div class="carrinho-footer">
-                                <div class="total-area">
-                                    <span>Total:</span>
-                                    <strong>R$ 35,00</strong>
+                                    <!-- Seletor de quantidade via FORM -->
+                                    <div class="qtd">
+                                        <form action="/carrinho/atualizar" method="POST">
+                                            <input type="hidden" name="item_id" value="{{ item.id }}">
+                                            <input type="hidden" name="acao" value="diminuir">
+                                            <button type="submit" class="btn-qtd">-</button>
+                                        </form>
+
+                                        <span class="qtd-numero">{{ item.quantidade }}</span>
+
+                                        <form action="/carrinho/atualizar" method="POST">
+                                            <input type="hidden" name="item_id" value="{{ item.id }}">
+                                            <input type="hidden" name="acao" value="aumentar">
+                                            <button type="submit" class="btn-qtd">+</button>
+                                        </form>
+                                    </div>
+
+                                    <!-- Botão de remover via FORM -->
+                                    <form action="/carrinho/remover" method="POST">
+                                        <input type="hidden" name="item_id" value="{{ item.id }}">
+                                        <button type="submit" class="btn-remover" title="Remover item">
+                                            <span class="material-symbols-outlined">delete</span>
+                                        </button>
+                                    </form>
                                 </div>
-                                <a href="/checkout" class="btn-finalizar">Finalizar Pedido</a>
+                                {% endfor %}
+                            {% else %}
+                                <p style="text-align: center; color: #888; margin: 20px 0;">Seu carrinho está vazio.</p>
+                            {% endif %}
+                        </div>
+
+                        <div class="carrinho-footer">
+                            <div class="total-area">
+                                <span>Total:</span>
+                                <strong>R$ {{ "%.2f"|format(total_carrinho) }}</strong>
                             </div>
+                            <a href="/checkout" class="btn-finalizar">Finalizar Pedido</a>
                         </div>
                     </div>
                 </div>
+            </div>
         </nav>
     </header>
 
@@ -117,13 +144,18 @@
             </p>
 
             <!-- MOVIDO PARA CÁ -->
-            <button type="button" class="btn-pedido">
-                Fazer pedido!
-            </button>
+            <form action="/carrinho/adicionar" method="POST">
+                <!-- Passa o ID do produto do banco de dados (exemplo: id 1 do Whopper) -->
+                <input type="hidden" name="item_id" value="1">
+                
+                <button type="submit" class="btn-pedido">
+                    Fazer pedido!
+                </button>
+            </form>
         </div>
 
         <div class="imagem_lanche">
-            <img src="/static/imagens/lanches/Primeiro-lanche.png" alt="lanche">
+            <img src="/static/imagens/lanches/Whopper Grogu.png" alt="lanche">
         </div>
     </main>
 
