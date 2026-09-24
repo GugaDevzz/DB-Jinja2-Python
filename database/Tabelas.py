@@ -25,6 +25,7 @@ class Pedido(Base):
     __tablename__ = "pedido"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
+    nome_cliente = Column(String(100), nullable=True)
     num_mesa = Column(Integer, nullable=False)
     status = Column(String(50), nullable=False)
     valor_final = Column(Float, default=0.0)

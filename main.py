@@ -1,4 +1,4 @@
-from database.Tabelas import Cliente, Produto
+from database.Tabelas import Cliente, Produto, Pedido, ItemPedido
 import json
 from database.Banco import get_db
 from sqlalchemy.orm import Session
@@ -44,6 +44,74 @@ def carregar_carrinho_do_cookie(request: Request, db: Session):
 
     return itens_carrinho, total
 
+
+
+@app.get("/checkout")
+def pagina_checkout(
+    request: Request,
+    db: Session = Depends(get_db)
+):
+    # Carrega os itens do carrinho utilizando a mesma função que você já criou
+    itens_carrinho, total = carregar_carrinho_do_cookie(request, db)
+    
+    # Opcional: Se quiser puxar o usuário logado caso exista (via cookie user_id)
+    user_id = request.cookies.get("user_id")
+    usuario_banco = None
+    if user_id:
+        usuario_banco = db.query(Cliente).filter(Cliente.id == int(user_id)).first()
+
+    return templates.TemplateResponse(
+        request=request,
+        name="checkout.html", # Certifique-se de criar esse arquivo HTML na pasta templates
+        context={
+            "carrinho": itens_carrinho,
+            "total_carrinho": total,
+            "usuario": usuario_banco
+        }
+    )
+
+@app.post("/checkout/enviar")
+def enviar_pedido_cozinha(
+    request: Request,
+    mesa: str = Form(...),
+    cliente: str = Form(...),
+    db: Session = Depends(get_db)
+):
+    # 1. Recupera os itens do carrinho do cookie
+    itens_carrinho, total = carregar_carrinho_do_cookie(request, db)
+    
+    if not itens_carrinho:
+        return RedirectResponse(url="/cardapio", status_code=status.HTTP_303_SEE_OTHER)
+
+    novo_pedido = Pedido(
+        nome_cliente=cliente,
+        num_mesa=mesa,
+        status="ESPERANDO",  # Ou "Em preparo", "Recebido", etc.
+        valor_final=total   # Salva o valor total calculado
+    )
+
+    db.add(novo_pedido)
+    db.commit()
+    # (Adicione a lógica de salvar os itens do pedido conforme a estrutura do seu banco)
+    for item in itens_carrinho:
+        # Pega o produto e a quantidade de forma direta
+        produto = item['produto'] if isinstance(item, dict) else item.produto
+        qtd = item['quantidade'] if isinstance(item, dict) else item.quantidade
+
+        # Associa o item ao pedido
+        item_bd = ItemPedido(
+            fk_id_pedido=novo_pedido.id,
+            fk_id_produto=produto.id,
+            quantidade=qtd
+        )
+        db.add(item_bd)
+
+    response = RedirectResponse(url="/catatau", status_code=status.HTTP_303_SEE_OTHER)
+    
+    # 4. Limpa o carrinho apagando o cookie correspondente
+    response.delete_cookie(key="carrinho_catatau")
+    
+    return response
 
 @app.get("/")
 def home():
