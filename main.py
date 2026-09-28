@@ -70,14 +70,16 @@ def pagina_checkout(
         }
     )
 
+from typing import Optional
+
 @app.post("/checkout/enviar")
 def enviar_pedido_cozinha(
     request: Request,
     mesa: str = Form(...),
     cliente: str = Form(...),
+    descricao: Optional[str] = Form(None),  # <--- RECEBE A DESCRIÇÃO / OBSERVAÇÃO
     db: Session = Depends(get_db)
 ):
-    # 1. Recupera os itens do carrinho do cookie
     itens_carrinho, total = carregar_carrinho_do_cookie(request, db)
     
     if not itens_carrinho:
@@ -85,32 +87,32 @@ def enviar_pedido_cozinha(
 
     novo_pedido = Pedido(
         nome_cliente=cliente,
-        num_mesa=mesa,
-        status="ESPERANDO",  # Ou "Em preparo", "Recebido", etc.
-        valor_final=total   # Salva o valor total calculado
+        num_mesa=int(mesa) if mesa.isdigit() else 0,
+        descricao=descricao,  # <--- SALVA A DESCRIÇÃO NO BANCO DE DADOS
+        status="ESPERANDO",
+        valor_final=total
     )
 
     db.add(novo_pedido)
     db.commit()
-    # (Adicione a lógica de salvar os itens do pedido conforme a estrutura do seu banco)
-    for item in itens_carrinho:
-        # Pega o produto e a quantidade de forma direta
-        produto = item['produto'] if isinstance(item, dict) else item.produto
-        qtd = item['quantidade'] if isinstance(item, dict) else item.quantidade
+    db.refresh(novo_pedido) # Atualiza para obter o ID gerado
 
-        # Associa o item ao pedido
+    # Salva os itens do carrinho corretamente
+    for item in itens_carrinho:
+        prod_id = item["id"] if isinstance(item, dict) else item.id
+        qtd = item["quantidade"] if isinstance(item, dict) else item.quantidade
+
         item_bd = ItemPedido(
             fk_id_pedido=novo_pedido.id,
-            fk_id_produto=produto.id,
+            fk_id_produto=prod_id,
             quantidade=qtd
         )
         db.add(item_bd)
 
+    db.commit() # Salva todos os ItemPedido no banco
+
     response = RedirectResponse(url="/catatau", status_code=status.HTTP_303_SEE_OTHER)
-    
-    # 4. Limpa o carrinho apagando o cookie correspondente
     response.delete_cookie(key="carrinho_catatau")
-    
     return response
 
 @app.get("/")
@@ -132,16 +134,22 @@ def pagina_cadastro(request: Request):
     name="cadastro/menu.html"
 )
 
-@app.get("/lanche1")
-def pagina_lanche1(
-    request: Request, 
+@app.get("/lanche/{nome}")
+def pagina_lanche(
+    nome: str,
+    request: Request,
     db: Session = Depends(get_db)
 ):
+    # Carrega os itens do carrinho através do cookie (compartilhado entre todas as páginas)
     itens_carrinho, total = carregar_carrinho_do_cookie(request, db)
     
+    # Monta o caminho do template dinamicamente usando o nome recebido na URL
+    # Exemplo: se a URL for /lanche/whopper, vai procurar em cardapio/envlanches/whopper.html
+    template_name = f"cardapio/envlanches/{nome}.html"
+
     return templates.TemplateResponse(
         request=request,
-        name="cardapio/envlanches/Whopper®Grogu.html",
+        name=template_name,
         context={
             "carrinho": itens_carrinho,
             "total_carrinho": total

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/lanches/Whopper_Grugu.css">
+    <link rel="icon" type="image/png" href="/static/imagens/catatauimg.png" alt="favicon do catatau">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Ultra&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=menu" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <title>Catatau Lanches</title>
+</head>
+<body>
+
+    <div class="top-banner">
+        UAU! Com uma conta criada você pode favoritar seus lanches no catatau.
+    </div>
+    
+    <a 
+        href="/cardapio" class="voltar-menu">
+        <i class="material-icons">arrow_back_ios</i>
+        <span class="voltar">Voltar</span>
+    </a>
+
+    <header>
+        <nav class="navbar">
+            <div class="logonav">
+                <img src="/static/imagens/catatauimg.png" alt="Logo Catatau">
+            </div>
+            <ul class="nav-links">
+                <li>
+                    <a href="/catatau">
+                        <span class="material-symbols-outlined">home</span>
+                        Início
+                    </a>
+                </li>
+                <li>
+                    <a href="/cardapio">
+                        <span class="material-symbols-outlined">lunch_dining</span>
+                        Cardápio
+                    </a>
+                </li> 
+                <li>
+                    <a href="#">
+                        <span class="material-symbols-outlined">sell</span>
+                        Cupons
+                    </a>
+                </li>
+                <li>
+                    <a href="/contato">
+                        <span class="material-symbols-outlined">storefront</span>
+                        Contato
+                    </a>
+                </li>
+                <li class="only-mobile">
+                    <a href="#">
+                        <span class="material-symbols-outlined">menu</span>
+                        Menu
+                    </a>
+                </li>
+            </ul>
+           
+            <div class="user-area">
+                <div class="user-menu-container">
+                    
+                    <input type="checkbox" id="toggle-profile-menu" class="menu-checkbox" {% if carrinho %}checked{% endif %}>
+
+                    <label for="toggle-profile-menu" class="button-profile">
+                        <i class="material-icons">shopping_cart</i>
+                    </label>
+
+                    <div class="aba_carrinho">
+                        <div class="carrinho-header">
+                            <h3>Seu Pedido</h3>
+                            <label for="toggle-profile-menu" class="btn-fechar">&times;</label>
+                        </div>
+
+                        <div class="carrinho-body">
+                            {% if carrinho %}
+                                {% for item in carrinho %}
+                                <div class="item-carrinho">
+                                    <img src="{{ item.imagem }}" alt="{{ item.nome }}">
+                                    
+                                    <div class="item-info">
+                                        <h4>{{ item.nome }}</h4>
+                                        <span class="preco">R$ {{ "%.2f"|format(item.preco) }}</span>
+                                    </div>
+
+                                    <!-- Seletor de quantidade via FORM -->
+                                    <div class="qtd">
+                                        <form action="/carrinho/atualizar" method="POST">
+                                            <input type="hidden" name="item_id" value="{{ item.id }}">
+                                            <input type="hidden" name="acao" value="diminuir">
+                                            <button type="submit" class="btn-qtd">-</button>
+                                        </form>
+
+                                        <span class="qtd-numero">{{ item.quantidade }}</span>
+
+                                        <form action="/carrinho/atualizar" method="POST">
+                                            <input type="hidden" name="item_id" value="{{ item.id }}">
+                                            <input type="hidden" name="acao" value="aumentar">
+                                            <button type="submit" class="btn-qtd">+</button>
+                                        </form>
+                                    </div>
+
+                                    <!-- Botão de remover via FORM -->
+                                    <form action="/carrinho/remover" method="POST">
+                                        <input type="hidden" name="item_id" value="{{ item.id }}">
+                                        <button type="submit" class="btn-remover" title="Remover item">
+                                            <span class="material-symbols-outlined">delete</span>
+                                        </button>
+                                    </form>
+                                </div>
+                                {% endfor %}
+                            {% else %}
+                                <p style="text-align: center; color: #888; margin: 20px 0;">Seu carrinho está vazio.</p>
+                            {% endif %}
+                        </div>
+
+                        <div class="carrinho-footer">
+                            <div class="total-area">
+                                <span>Total:</span>
+                                <strong>R$ {{ "%.2f"|format(total_carrinho) }}</strong>
+                            </div>
+                            <a href="/checkout" class="btn-finalizar">Finalizar Pedido</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="sobre_lanche">
+        <div class="descri-lanche">
+            <h1 class="titulo-lanche">King Bacon</h1>
+            <p>
+                A Experiência Defumada: O paraíso dos amantes de bacon! Este lanche é um gigante.
+                Ele conta com dois hambúrgueres altos e suculentos, intercalados por camadas duplas
+                de bacon crocante e muito queijo cheddar derretido. Para coroar, um ovo frito com
+                gema perfeitamente cremosa e mais bacon por cima. O pão brioche macio mal consegue 
+                conter tanta fartura. Uma experiência defumada, crocante e extremamente satisfatória.
+            </p>
+
+            <!-- MOVIDO PARA CÁ -->
+            <form action="/carrinho/adicionar" method="POST">
+                <!-- Passa o ID do produto do banco de dados (exemplo: id 1 do Whopper) -->
+                <input type="hidden" name="item_id" value="1">
+                
+                <button type="submit" class="btn-pedido">
+                    Fazer pedido!
+                </button>
+            </form>
+        </div>
+
+        <div class="imagem_lanche">
+            <img src="/static/imagens/lanches/Quinto-lanche.png" alt="lanche">
+        </div>
+    </main>
+
+        <footer class="main-footer">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h2 class="footer-logo">Catatau<span>Lanches</span></h2>
+                    <p>O verdadeiro podrão raiz desde 1992. Qualidade e tamanho que você conhece.</p>
+                </div>
+
+                <div class="footer-col">
+                    <h3>Navegação</h3>
+                    <ul>
+                        <li><a href="/cardapio">Cardápio</a></li>
+                        <li><a target="_blank" href="https://www.google.com/maps/place/Catatau+Lanches/@-21.1724811,-47.7973029,17z/data=!3m1!4b1!4m6!3m5!1s0x94b9bf0415c9171f:0xfafb21436bf0c0ac!8m2!3d-21.1724811!4d-47.7973029!16s%2Fg%2F1tgcs_33?entry=ttu&g_ep=EgoyMDI2MDUyNy4wIKXMDSoASAFQAw%3D%3D">Unidades</a></li>
+                        <li><a href="/contato">Sobre nós</a></li>
+                        <li><a href="#">Trabalhe Conosco</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h3>Contato</h3>
+                    <p>📞 (16) 99999-9999</p>
+                    <p>📍 Ribeirão Preto, SP</p>
+                    <p>⏰ Dom a Qui: 18h - 00h</p>
+                    <p>⏰ Sex e Sáb: 18h - 04h</p>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 Catatau Lanches. Todos os direitos reservados.</p>
+            </div>
+        </footer>
+    </body>
+</html>

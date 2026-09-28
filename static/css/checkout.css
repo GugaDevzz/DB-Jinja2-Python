@@ -196,6 +196,25 @@ body {
   font-size: 14px;
 }
 
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.2s;
+    font-family: inherit; /* Mantém a mesma fonte dos outros inputs */
+}
+
+/* Ajustes específicos apenas para o campo de descrição */
+#descricao {
+    height: 100px;         /* Define a altura inicial da caixa */
+    resize: vertical;      /* Permite ao usuário redimensionar só para baixo */
+    white-space: pre-wrap; /* Garante a quebra de linha automática */
+}
+
 .form-group {
   margin-bottom: 20px;
 }
