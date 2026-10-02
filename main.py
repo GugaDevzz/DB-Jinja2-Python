@@ -1,3 +1,5 @@
+
+from typing import Optional
 from database.Tabelas import Cliente, Produto, Pedido, ItemPedido
 import json
 from database.Banco import get_db
@@ -45,7 +47,6 @@ def carregar_carrinho_do_cookie(request: Request, db: Session):
     return itens_carrinho, total
 
 
-
 @app.get("/checkout")
 def pagina_checkout(
     request: Request,
@@ -66,11 +67,9 @@ def pagina_checkout(
         context={
             "carrinho": itens_carrinho,
             "total_carrinho": total,
-            "usuario": usuario_banco
+            "usuario": usuario_banco,
         }
     )
-
-from typing import Optional
 
 @app.post("/checkout/enviar")
 def enviar_pedido_cozinha(
@@ -111,8 +110,10 @@ def enviar_pedido_cozinha(
 
     db.commit() # Salva todos os ItemPedido no banco
 
-    response = RedirectResponse(url="/catatau", status_code=status.HTTP_303_SEE_OTHER)
+    # esse enviado=true significa que o jinja seja executado logo quando for redirecionado para o /catatau
+    response = RedirectResponse(url="/catatau?enviado=true", status_code=status.HTTP_303_SEE_OTHER)
     response.delete_cookie(key="carrinho_catatau")
+    
     return response
 
 @app.get("/")
@@ -186,7 +187,8 @@ def pagina_menu(
     db: Session = Depends(get_db)
 ):
     usuario_banco = None
-    
+    mensagem_pedido = "SEU LANCHE FOI ENVIADO PARA A COZINHA \n SEU PEDIDO SERA ENTREGUE EM 10 MINUTOS!" 
+
     # Se o cookie existir (significa que o usuário fez login há menos de 1 hora)
     if user_id:
         usuario_banco = db.query(Cliente).filter(Cliente.id == int(user_id)).first()
@@ -195,7 +197,8 @@ def pagina_menu(
         request=request,
         name="index.html",
         context={
-            "page_user": usuario_banco  # Passa o usuário se logado, ou None se deslogado
+            "page_user": usuario_banco,  # Passa o usuário se logado, ou None se deslogado
+            "enviado": mensagem_pedido
         }
     )
 

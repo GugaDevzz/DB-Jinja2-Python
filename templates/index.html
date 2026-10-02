@@ -114,6 +114,12 @@
             </div>
         </nav>
     </header>
+        {%if enviado%}
+            <div class="notification-lanche">
+                <img src="/static/imagens/catatauimg.png" alt="image-catatau">
+                <h2 class="message-enviado"> {{ enviado }}</h2>
+            </div>
+        {%endif%}
 
     <main class="hero">
         <section class="bannerlanche">
