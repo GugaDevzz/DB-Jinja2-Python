@@ -1,6 +1,6 @@
 
 from typing import Optional
-from database.Tabelas import Cliente, Produto, Pedido, ItemPedido
+from database.Tabelas import Cliente, Produto, Pedido, ItemPedido, ProdutoEstoque, Ingrediente
 import json
 from database.Banco import get_db
 from sqlalchemy.orm import Session
@@ -9,7 +9,7 @@ from fastapi.staticfiles import StaticFiles # 1. Importe o StaticFile
 from sqlalchemy import or_
 from fastapi.responses import RedirectResponse, HTMLResponse
 from starlette import status
-from fastapi import FastAPI, Depends, Form, Request
+from fastapi import FastAPI, Depends, Form, Request, Query
 from starlette import status
 from typing import Annotated
 from fastapi import FastAPI, Depends, Form, Request, Cookie  # <--- Adicionado Cookie
@@ -47,30 +47,55 @@ def carregar_carrinho_do_cookie(request: Request, db: Session):
     return itens_carrinho, total
 
 
+@app.get("/")
+def home():
+    return {"status": "Servidor no ar"}
+
+#just to open the login page
+@app.get("/login")
+def pagina_login(request: Request):
+    return templates.TemplateResponse(
+    request=request, 
+    name="login/Menu.html"
+)
+
+@app.get("/cadastro")
+def pagina_cadastro(request: Request):
+    return templates.TemplateResponse(
+    request=request, 
+    name="cadastro/menu.html"
+)
+
+@app.get("/contato")
+def pagina_contato(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="contato/sobre-nos.html"
+    )
 @app.get("/checkout")
 def pagina_checkout(
     request: Request,
     db: Session = Depends(get_db)
 ):
-    # Carrega os itens do carrinho utilizando a mesma função que você já criou
+    # Carrega os itens do carrinho
     itens_carrinho, total = carregar_carrinho_do_cookie(request, db)
     
-    # Opcional: Se quiser puxar o usuário logado caso exista (via cookie user_id)
+    # Pega o user_id diretamente do cookie da requisição (igualzinho na rota /catatau)
     user_id = request.cookies.get("user_id")
     usuario_banco = None
+    
     if user_id:
         usuario_banco = db.query(Cliente).filter(Cliente.id == int(user_id)).first()
 
     return templates.TemplateResponse(
         request=request,
-        name="checkout.html", # Certifique-se de criar esse arquivo HTML na pasta templates
+        name="checkout.html",
         context={
             "carrinho": itens_carrinho,
             "total_carrinho": total,
-            "usuario": usuario_banco,
+            "page_user": usuario_banco, # <- Certifique-se que no HTML o campo usa essa variável
         }
     )
-
 @app.post("/checkout/enviar")
 def enviar_pedido_cozinha(
     request: Request,
@@ -108,32 +133,20 @@ def enviar_pedido_cozinha(
         )
         db.add(item_bd)
 
+        #aqui estou descontando os ingredientes de cada lanches na tabela de ingredientes
+        associacoes_estoque = db.query(ProdutoEstoque).filter(ProdutoEstoque.fk_id_produto == prod_id).all()
+        for assoc in associacoes_estoque:
+            ingrediente = db.query(Ingrediente).filter(Ingrediente.id == assoc.fk_id_estoque).first()
+            if ingrediente:
+                total_gasto = assoc.quantidade_necessaria * qtd
+                ingrediente.quantidade -= total_gasto
+
     db.commit() # Salva todos os ItemPedido no banco
 
-    # esse enviado=true significa que o jinja seja executado logo quando for redirecionado para o /catatau
     response = RedirectResponse(url="/catatau?enviado=true", status_code=status.HTTP_303_SEE_OTHER)
-    response.delete_cookie(key="carrinho_catatau")
-    
+    response.delete_cookie(key="carrinho_catatau")    
     return response
 
-@app.get("/")
-def home():
-    return {"status": "Servidor no ar"}
-
-#just to open the login page
-@app.get("/login")
-def pagina_login(request: Request):
-    return templates.TemplateResponse(
-    request=request, 
-    name="login/Menu.html"
-)
-
-@app.get("/cadastro")
-def pagina_cadastro(request: Request):
-    return templates.TemplateResponse(
-    request=request, 
-    name="cadastro/menu.html"
-)
 
 @app.get("/lanche/{nome}")
 def pagina_lanche(
@@ -157,13 +170,6 @@ def pagina_lanche(
         }
     )
 
-@app.get("/contato")
-def pagina_contato(request: Request):
-    return templates.TemplateResponse(
-        request=request,
-        name="contato/sobre-nos.html"
-    )
-
 @app.get("/cardapio")
 def pagina_menu_deslogado(
     request: Request,
@@ -183,13 +189,18 @@ def pagina_menu_deslogado(
 @app.get("/catatau")
 def pagina_menu(
     request: Request,
-    user_id: Annotated[str | None, Cookie()] = None,  # Captura o cookie salvo no navegador
+    enviado: Annotated[str | None, Query()] = None,  # Captura se veio ?enviado=true na URL
+    user_id: Annotated[str | None, Cookie()] = None,  # Captura o cookie do usuário logado
     db: Session = Depends(get_db)
 ):
     usuario_banco = None
-    mensagem_pedido = "SEU LANCHE FOI ENVIADO PARA A COZINHA \n SEU PEDIDO SERA ENTREGUE EM 10 MINUTOS!" 
+    mensagem_pedido = None  # Começa vazia por padrão
 
-    # Se o cookie existir (significa que o usuário fez login há menos de 1 hora)
+    # Só preenche a mensagem se o parâmetro 'enviado' vier igual a "true" na URL
+    if enviado == "true":
+        mensagem_pedido = "SEU LANCHE FOI ENVIADO PARA A COZINHA \n SEU PEDIDO SERA ENTREGUE EM 10 MINUTOS!" 
+
+    # Se o cookie existir, busca o usuário no banco
     if user_id:
         usuario_banco = db.query(Cliente).filter(Cliente.id == int(user_id)).first()
 
@@ -197,8 +208,8 @@ def pagina_menu(
         request=request,
         name="index.html",
         context={
-            "page_user": usuario_banco,  # Passa o usuário se logado, ou None se deslogado
-            "enviado": mensagem_pedido
+            "page_user": usuario_banco,  
+            "enviado": mensagem_pedido   # Vai ser None se não acabou de comprar, ou a mensagem se acabou de comprar
         }
     )
 
@@ -228,7 +239,6 @@ def pagina_profile(
         name="usuarios/user.html",
         context={"usuario": dados_usuario}
     )
-
 
 
 @app.post("/login", response_class=HTMLResponse)

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, ForeignKey
+from sqlalchemy import Column, Integer, String, Float, Numeric, ForeignKey
 from database.Banco import Base
 from sqlalchemy.orm import relationship
 
@@ -46,3 +46,21 @@ class ItemPedido(Base):
     # Relacionamentos para facilitar acessos diretos no Python
     pedido = relationship("Pedido", back_populates="itens")
     produto = relationship("Produto")
+
+
+class Ingrediente(Base):
+    __tablename__ = 'ingredientes'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    nome = Column(String, nullable=False)
+    unidade_medida = Column(String, nullable=False)
+    quantidade = Column(Numeric(10, 2), nullable=False)
+    status = Column(String, nullable=False)
+
+class ProdutoEstoque(Base):
+    __tablename__ = 'produto_estoque'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    fk_id_produto = Column(Integer, ForeignKey("produto.id"), nullable=False)
+    fk_id_estoque = Column(Integer, ForeignKey("ingredientes.id"), nullable=False)
+    quantidade_necessaria = Column(Numeric(10, 2), nullable=False)
