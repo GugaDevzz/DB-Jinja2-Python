@@ -65,6 +65,16 @@
                         <th>Gênero</th>
                         <td>{{usuario.genero}}</td>
                     </tr>
+                    <tr>
+                        <th>Cupom de Boas-Vindas</th>
+                        <td>
+                            {% if usuario.cupom_usado %}
+                                <span style="color: #c40700; font-weight: bold;">Já Utilizado (1ª compra)</span>
+                            {% else %}
+                                <span style="color: #2e7d32; font-weight: bold;">Disponível (30% OFF)</span> &bull; <a href="/cupons" style="color: #ff8732; font-weight: bold; text-decoration: underline;">Ver Cupom</a>
+                            {% endif %}
+                        </td>
+                    </tr>
                 </table>
             </div>
 

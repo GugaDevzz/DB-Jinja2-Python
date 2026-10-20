@@ -18,13 +18,15 @@
 <body>
 
     <div class="top-banner">
-        ATENÇÃO! Confira nossos cupons promocionais disponíveis no app e site oficiais.
+        🔥 <a href="/cupons" style="color: inherit; text-decoration: none;">CRIE SUA CONTA NO CATATAU E GANHE <strong>30% DE DESCONTO</strong> NA SUA PRIMEIRA COMPRA! CLIQUE AQUI</a>
     </div>
 
     <header>
         <nav class="navbar">
             <div class="logonav">
-                <img src="/static/imagens/catatauimg.png" alt="Logo Catatau">
+                <a href="/catatau">
+                    <img src="/static/imagens/catatauimg.png" alt="Logo Catatau">
+                </a>
             </div>
             <ul class="nav-links">
                 <li>
@@ -40,7 +42,7 @@
                     </a>
                 </li> 
                 <li>
-                    <a href="#">
+                    <a href="/cupons">
                         <span class="material-symbols-outlined">sell</span>
                         Cupons
                     </a>
@@ -64,7 +66,7 @@
                         <ul>
                             <li><a href="/catatau"><span class="material-symbols-outlined">home</span> Início</a></li>
                             <li><a href="/cardapio"><span class="material-symbols-outlined">lunch_dining</span> Cardápio</a></li>
-                            <li><a href="#"><span class="material-symbols-outlined">sell</span> Cupons</a></li>
+                            <li><a href="/cupons"><span class="material-symbols-outlined">sell</span> Cupons</a></li>
                             <li><a href="/contato"><span class="material-symbols-outlined">storefront</span> Contato</a></li>
 
                             {% if page_user %}
@@ -116,7 +118,7 @@
                 <div class="form-group">
                     <label for="cliente">Seu Nome:</label>
                     <input type="text" id="cliente" name="cliente" 
-                           value="{{ usuario.nome if usuario else '' }}" 
+                           value="{{ page_user.nome if page_user else (usuario.nome if usuario else '') }}" 
                            placeholder="Digite seu nome completo" required>
                 </div>
 
@@ -129,8 +131,8 @@
                 </div>
 
                 <div class="form-group">
-                <label for="descricao">Descrição(Opcional):</label>
-                <textarea id="descricao" name="descricao" placeholder="Ex: Quero XFraldinha sem cebola">{{ descricao if descricao else '' }}</textarea>
+                    <label for="descricao">Descrição (Opcional):</label>
+                    <textarea id="descricao" name="descricao" placeholder="Ex: Quero XFraldinha sem cebola">{{ descricao if descricao else '' }}</textarea>
                 </div>
                 
                 <!-- Resumo dos Itens -->
@@ -150,10 +152,65 @@
                     </ul>
                 </div>
 
-                <!-- Total -->
-                <div class="total-checkout">
-                    <span>Total a Pagar:</span>
-                    <span class="valor-total">R$ {{ "%.2f"|format(total_carrinho) }}</span>
+                <!-- Seção de Cupom de Desconto (100% HTML sem JavaScript) -->
+                <div class="checkout-cupom-secao">
+                    <label for="cupom-input" class="cupom-label">
+                        <span class="material-symbols-outlined">sell</span>
+                        Possui cupom de desconto?
+                    </label>
+
+                    <div class="cupom-input-wrapper">
+                        <input type="text" id="cupom-input" name="cupom" value="{{ cupom_aplicado if cupom_aplicado else '' }}" placeholder="Ex: BEMVINDO30">
+                        <button type="submit" formaction="/checkout/aplicar" formmethod="POST" class="btn-aplicar-cupom">Aplicar</button>
+                        {% if cupom_aplicado %}
+                            <button type="submit" formaction="/checkout/remover" formmethod="POST" class="btn-remover-cupom">Remover</button>
+                        {% endif %}
+                    </div>
+
+                    {% if mensagem_cupom %}
+                        <div class="cupom-msg {{ tipo_msg_cupom }}">
+                            {% if precisa_login %}
+                                <div>
+                                    ⚠️ {{ mensagem_cupom }}
+                                    <div style="margin-top: 6px;">
+                                        <a href="/cadastro">Criar conta</a> ou <a href="/login">Fazer login</a>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <span>{{ mensagem_cupom }}</span>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+
+                    {% if cupom_elegivel and not cupom_aplicado %}
+                        <div class="dica-cupom-disponivel">
+                            <span>🎉 Você tem <strong>30% OFF</strong> de boas-vindas disponível!</span>
+                            <button type="submit" formaction="/checkout/aplicar" formmethod="POST" name="cupom" value="BEMVINDO30" class="btn-usar-dica">Usar BEMVINDO30</button>
+                        </div>
+                    {% elif not page_user and not cupom_aplicado %}
+                        <div class="dica-cupom-disponivel">
+                            <span>💡 Clientes cadastrados ganham <strong>30% OFF</strong> na 1ª compra!</span>
+                            <a href="/cadastro" class="btn-usar-dica" style="text-decoration: none;">Cadastrar-se</a>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Resumo dos Valores -->
+                <div class="resumo-valores-checkout">
+                    <div class="linha-valor">
+                        <span>Subtotal dos itens:</span>
+                        <span>R$ {{ "%.2f"|format(total_carrinho) }}</span>
+                    </div>
+                    {% if desconto and desconto > 0 %}
+                        <div class="linha-valor linha-desconto">
+                            <span>Desconto de Boas-Vindas (30%):</span>
+                            <span class="valor-desconto-negativo">- R$ {{ "%.2f"|format(desconto) }}</span>
+                        </div>
+                    {% endif %}
+                    <div class="total-checkout" style="margin: 10px 0 0 0;">
+                        <span>Total a Pagar:</span>
+                        <span class="valor-total">R$ {{ "%.2f"|format(total_final if total_final is defined else total_carrinho) }}</span>
+                    </div>
                 </div>
 
                 <!-- Botões de Ação -->

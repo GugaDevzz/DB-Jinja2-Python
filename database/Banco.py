@@ -5,7 +5,7 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 caminho_driver = r"ODBC Driver 17 for SQL Server"
 
 string_conexao = (
-    f"DRIVER={{{caminho_driver}}};"
+    f"DRIVER={{{caminho_driver}}};"  # <-- Removido o espaço de dentro das chavetas
     r"SERVER=(localdb)\MSSQLLocalDB;"
     r"DATABASE=DBCATATAU;"
     r"Trusted_Connection=yes;"

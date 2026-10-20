@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, Numeric, ForeignKey
+from sqlalchemy import Column, Integer, String, Float, Numeric, ForeignKey, Boolean
 from database.Banco import Base
 from sqlalchemy.orm import relationship
 
@@ -11,6 +11,7 @@ class Cliente(Base):
     cpf = Column(String(255), nullable=False)
     telefone = Column(String(20), unique=True)
     senha = Column(String(255), nullable=False)
+    cupom_usado = Column(Boolean, default=False, nullable=False)
     
 class Produto(Base):
     __tablename__ = "produto"

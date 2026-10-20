@@ -353,13 +353,22 @@ body {
   padding: 14px 32px;
   margin-top: 20px;
   font-size: 1.1rem;
-  font-weight: bold;
+  background-color: #ff7425; /* Laranja do tema */
+  color: #ffffff;
+  border: none;
   
-  /* Formato e Sombra */
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(255, 116, 37, 0.3);
-  
-  /* Interatividade */
+  /* Dimensões e Espaçamento */
+  padding: 14px 32px;
+  margin-top: 20px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 14px;
+  margin-top: 10px;
+  display: block;
+  box-sizing: border-box;
+  background: linear-gradient(135deg, var(--color-catatau-orange) 0%, var(--color-vermelhao) 100%);
+  box-shadow: 0 6px 20px rgba(196, 7, 0, 0.4);
   cursor: pointer;
   transition: all 0.25s ease-in-out;
 }
@@ -454,99 +463,294 @@ body {
     display: none;
 }
 
+/* ==========================================================================
+   MEDIA QUERY: TABLETS E CELULARES (<= 768px)
+   ========================================================================== */
 @media (max-width: 768px) {
 
-.nav-links .only-mobile {
+  /* Exibe ícones e links apenas para mobile */
+  .nav-links .only-mobile {
     display: block !important;
-}
+  }
 
-.nav-links .material-symbols-outlined {
+  .nav-links .material-symbols-outlined {
     display: block;
-}
+  }
 
-.nav-links {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 65px; /* Aumentado para dar espaço suficiente aos ícones + texto */
-  background-color: var(--color-catatau-cream); 
-  display: flex;
-  justify-content: space-around; 
-  align-items: center;
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1); 
-  z-index: 9990;
-  padding: 5px 50px;
-}
-
-.nav-links a {
-    font-size: 11px; /* Tamanho reduzido do texto para estética de app */
+  /* Barra de Navegação Inferior Fixa Estilo App */
+  .nav-links {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 65px;
+    background-color: var(--color-catatau-cream); 
     display: flex;
-    flex-direction: column; /* Coloca o ícone acima do texto */
+    justify-content: space-around; 
     align-items: center;
-    gap: 3px; /* Espaçamento entre o ícone e o texto */
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.15); 
+    z-index: 9990;
+    padding: 5px 10px;
+    gap: 0;
+  }
+
+  .nav-links a {
+    font-size: 11px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
     font-weight: 700;
     color: var(--color-catatau-brown);
     text-decoration: none;
-}
-
-    /* Estilo e tamanho dos ícones na barra inferior */
-.nav-links a .material-symbols-outlined {
-    font-size: 26px;
-}
-    
-  .user-area {
-    display: none;
-    position: absolute;
-    right: 15%;
-    font-size: 11px;
   }
 
-.navbar {
-  Justify-content: center; 
-}
+  .nav-links a .material-symbols-outlined {
+    font-size: 24px;
+  }
 
-.hero {
+  /* Botão de Carrinho no Topo */
+  .user-area {
+    display: block !important;
+    position: absolute;
+    top: 25px;
+    right: 15px;
+    z-index: 100;
+  }
+
+  .button-profile {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+    border: 1px solid #e0d0c0;
+    cursor: pointer;
+  }
+
+  .button-profile .material-icons {
+    font-size: 26px !important;
+    color: var(--color-catatau-brown);
+  }
+
+  /* Drawer / Janela do Carrinho responsiva no celular */
+  .aba_carrinho {
+    position: fixed !important;
+    top: auto !important;
+    bottom: 75px !important;
+    left: 10px !important;
+    right: 10px !important;
+    width: auto !important;
+    max-width: 420px !important;
+    margin: 0 auto !important;
+    max-height: 75vh !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35) !important;
+    z-index: 99999 !important;
+    border-radius: 16px !important;
+  }
+
+  .item-carrinho {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    background: #fdfdfd;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid #eee;
+  }
+
+  .item-carrinho form {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: none !important;
+  }
+
+  /* Navbar e Botão Voltar */
+  .navbar {
+    justify-content: center;
     position: relative;
-    z-index: 1;
+    height: 75px;
+  }
+
+  .voltar-menu {
+    position: absolute;
+    top: 25px;
+    left: 15px;
+    font-size: 16px;
+    margin: 0 !important;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    color: var(--color-catatau-brown);
+    text-decoration: none;
+    font-weight: 800;
+  }
+
+  .voltar-menu .material-icons {
+    font-size: 22px !important;
+  }
+
+  .logonav img {
+    position: static;
+    margin: 30px auto 0 auto;
+    width: 90px;
+    display: block;
+  }
+
+  body {
+    padding-bottom: 80px;
+  }
+
+  /* ========================================================================
+     PARTE DO PEDIDO DO LANCHE (SOBRE_LANCHE) RESPONSIVO NO CELULAR
+     ======================================================================== */
+  .sobre_lanche {
+    display: flex;
+    flex-direction: column-reverse; /* Imagem do lanche no topo, texto e botão abaixo */
+    align-items: center;
+    justify-content: center;
+    padding: 15px 18px 85px 18px;
+    width: 100%;
+    box-sizing: border-box;
+    gap: 20px;
+  }
+
+  .imagem_lanche {
+    width: 100%;
+    max-width: 320px;
+    text-align: center;
+    margin: 0 auto;
+  }
+
+  .imagem_lanche img {
+    width: 100%;
+    max-width: 270px;
+    height: auto;
+    display: block;
+    margin: auto;
+    margin-top: 30px;
+    border-radius: 15px;
+    filter: drop-shadow(0 10px 24px rgba(80, 35, 20, 0.3));
+  }
+
+  .descri-lanche {
+    width: 100%;
+    max-width: 100%;
+    text-align: center;
+    padding: 0;
+  }
+
+  .titulo-lanche {
+    font-size: 30px;
+    color: var(--color-catatau-brown);
+    font-weight: 900;
+    margin-bottom: 12px;
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  .descri-lanche p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #554339;
+    text-align: left;
+    margin-bottom: 22px;
+    background: #ffffff;
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px solid #ebd9c7;
+    box-shadow: 0 4px 12px rgba(80, 35, 20, 0.05);
+  }
+
+  /* Botão Fazer Pedido Gigante e Fácil de Clicar */
+  .btn-pedido {
+    width: 100%;
+    max-width: 100%;
+    padding: 18px 24px;
+    font-size: 18px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 14px;
+    margin-top: 10px;
+    display: block;
+    box-sizing: border-box;
+    background: linear-gradient(135deg, var(--color-catatau-orange) 0%, var(--color-vermelhao) 100%);
+    box-shadow: 0 6px 20px rgba(196, 7, 0, 0.4);
+    cursor: pointer;
+  }
+
+  .btn-pedido:active {
+    transform: scale(0.98);
+  }
+
+  /* Footer Responsivo */
+  .footer-container {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
+
+  .footer-col {
+    flex: none;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .footer-col h3 {
+    display: block;
+    margin: 0 auto 10px auto;
+  }
+
+  .main-footer {
+    padding: 20px 20px 10px 20px;
+  }
 }
 
-body {
-  padding-bottom: 70px;
+/* ==========================================================================
+   MEDIA QUERY: TELAS PEQUENAS (<= 480px / ex: 375px)
+   ========================================================================== */
+@media (max-width: 480px) {
+
+  .nav-links {
+    padding: 4px 5px;
+  }
+
+  .nav-links > li > a {
+    font-size: 10px;
+  }
+
+  .nav-links a .material-symbols-outlined {
+    font-size: 22px;
+  }
+
+  .titulo-lanche {
+    font-size: 26px;
+  }
+
+  .imagem_lanche img {
+    max-width: 230px;
+  }
+
+  .sobre_lanche {
+    padding: 10px 14px 85px 14px;
+  }
+
+  .btn-pedido {
+    padding: 16px;
+    font-size: 16px;
+  }
 }
 
-.voltar-menu {
-  position: absolute;
-  font-size: 25px;
-  color: var(--color-catatau-brown);
-  display: flex;
-  left: 5%;
-  font-weight: 700;
-  text-decoration: none;
-  padding-top: 4px;
-  margin-left: 0px;
-  z-index: 50;
-}
-
-  /* FOOTER */
-.footer-container {
-  flex-direction: column;
-  text-align: center;
-  gap: 15px; /* Diminui o espaço geral entre as colunas */
-}
-
-.footer-col {
-  flex: none; /* Impede que a coluna tente esticar para preencher espaço vertical */
-  width: 100%;
-  margin-bottom: 10px; /* Controla o espaço entre uma seção e outra */
-}
-
-.footer-col h3 {
-  display: block;
-  margin: 0 auto 10px auto; /* Reduz o espaço abaixo do título */
-}
-
-.main-footer {
-  padding: 20px 20px 10px 20px; /* Reduz o espaçamento interno do footer no topo */
-}
+@keyframes floatingBurger {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-8px);
+  }
 }

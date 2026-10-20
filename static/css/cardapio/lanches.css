@@ -535,8 +535,64 @@ display: none;
     font-size: 24px;
   }
   
-  .user-area{
-    padding: 10px;
+  /* Botão de Carrinho no Topo */
+  .user-area {
+    display: block !important;
+    position: absolute;
+    top: 25px;
+    right: 15px;
+    z-index: 100;
+  }
+
+  .button-profile {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+    border: 1px solid #e0d0c0;
+    cursor: pointer;
+  }
+
+  .button-profile .material-icons {
+    font-size: 26px !important;
+    color: var(--color-catatau-brown);
+  }
+
+  /* Gaveta do Carrinho responsiva no celular */
+  .aba_carrinho {
+    position: fixed !important;
+    top: auto !important;
+    bottom: 75px !important;
+    left: 10px !important;
+    right: 10px !important;
+    width: auto !important;
+    max-width: 420px !important;
+    margin: 0 auto !important;
+    max-height: 75vh !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35) !important;
+    z-index: 99999 !important;
+    border-radius: 16px !important;
+  }
+
+  .item-carrinho {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    background: #fdfdfd;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid #eee;
+  }
+
+  .item-carrinho form {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: none !important;
   }
   
   .logonav img {
@@ -708,8 +764,32 @@ display: none;
 
   /* Grid de lanches responsivo no celular */
   .grid-sanduiches {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 15px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .menu-container {
+    padding: 0 10px;
+  }
+
+  fieldset {
+    padding: 10px 5px;
+  }
+
+  legend {
+    font-size: 22px;
+    padding: 20px 0 10px 0;
+    text-align: center;
+  }
+
+  .card-item h3 {
+    font-size: 14px;
+    padding: 12px 6px;
+  }
+
+  .img-container {
+    padding: 12px;
+    min-height: 120px;
   }
 
   .footer-container {
@@ -749,5 +829,15 @@ display: none;
   .logonav img {
     width: 95px;
     margin-top: 15px;
+  }
+
+  .grid-sanduiches {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .card-item h3 {
+    font-size: 12px;
+    padding: 10px 4px;
   }
 }
