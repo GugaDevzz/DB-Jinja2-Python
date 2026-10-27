@@ -12,6 +12,7 @@ class Cliente(Base):
     telefone = Column(String(20), unique=True)
     senha = Column(String(255), nullable=False)
     cupom_usado = Column(Boolean, default=False, nullable=False)
+    pedidos_count = Column(Integer, default=0, nullable=False)
     
 class Produto(Base):
     __tablename__ = "produto"

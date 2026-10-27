@@ -371,12 +371,12 @@ def enviar_pedido_cozinha(
             if usuario_banco and not usuario_banco.cupom_usado:
                 desconto = round(total * 0.30, 2)
                 usuario_banco.cupom_usado = True
-                db.commit()
                 info_cupom = f" [Cupom {cupom_limpo} (-30%): -R$ {desconto:.2f}]"
 
     total_final = max(0.0, round(total - desconto, 2))
     descricao_final = f"{(descricao or '').strip()}{info_cupom}".strip()
 
+    # Cria o pedido para a cozinha
     novo_pedido = Pedido(
         nome_cliente=cliente,
         num_mesa=int(mesa) if mesa.isdigit() else 0,
@@ -387,9 +387,9 @@ def enviar_pedido_cozinha(
 
     db.add(novo_pedido)
     db.commit()
-    db.refresh(novo_pedido) # Atualiza para obter o ID gerado
+    db.refresh(novo_pedido)
 
-    # Salva os itens do carrinho corretamente
+    # Salva os itens do carrinho e desconta do estoque (sua lógica atual)
     for item in itens_carrinho:
         prod_id = item["id"] if isinstance(item, dict) else item.id
         qtd = item["quantidade"] if isinstance(item, dict) else item.quantidade
@@ -401,7 +401,6 @@ def enviar_pedido_cozinha(
         )
         db.add(item_bd)
 
-        # aqui estou descontando os ingredientes de cada lanches na tabela de ingredientes
         associacoes_estoque = db.query(ProdutoEstoque).filter(ProdutoEstoque.fk_id_produto == prod_id).all()
         for assoc in associacoes_estoque:
             ingrediente = db.query(Ingrediente).filter(Ingrediente.id == assoc.fk_id_estoque).first()
@@ -409,7 +408,19 @@ def enviar_pedido_cozinha(
                 total_gasto = assoc.quantidade_necessaria * qtd
                 ingrediente.quantidade -= total_gasto
 
-    db.commit() # Salva todos os ItemPedido no banco
+    # --- O PULO DO GATO PARA O CPF / PEDIDOS COUNT ---
+    # Se o usuário estiver logado, incrementamos direto na coluna dele baseada no ID/CPF dele
+    if usuario_banco:
+        # Garante que incrementa de forma segura
+        usuario_banco.pedidos_count = (usuario_banco.pedidos_count or 0) + 1
+    else:
+        # Caso ele tenha preenchido o nome/CPF no checkout sem estar logado na sessão web, 
+        # podemos tentar achar pelo CPF digitado no input do form se houver:
+        cliente_por_cpf = db.query(Cliente).filter(Cliente.cpf == cliente).first() # Ajuste se o campo do form for o CPF
+        if cliente_por_cpf:
+            cliente_por_cpf.pedidos_count = (cliente_por_cpf.pedidos_count or 0) + 1
+
+    db.commit() # Salva todas as alterações (itens, estoque e o contador do cliente)
 
     response = RedirectResponse(url="/catatau?enviado=true", status_code=status.HTTP_303_SEE_OTHER)
     response.delete_cookie(key="carrinho_catatau")    

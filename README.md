@@ -104,8 +104,11 @@ DB-Jinja2-Python/
 
 ### 🛠️ Pré-requisitos
 
-Certifique-se de ter os seguintes itens instalados no seu ambiente:
+(Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned) ; (& c:\Users\...\.venv\Scripts\Activate.ps1) #Se caso der bloqueio no venv
+venv\Scripts\activate.ps1 - powershell
+venv\Scripts\activate.bat - Command Prompt
 
+Certifique-se de ter os seguintes itens instalados no seu ambiente:
 1. **Python 3.8+** (recomendado 3.10 ou superior):
    ```bash
    python --version
